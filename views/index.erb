@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MODs Transformer Service</title>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+  </head>
+  <body>
+  
+  <div id="content">
+    <div id="header">
+      <h1>MODs Transformer Service</h1>
+    </div>
+    <p>This service transforms excel generated xml files into MODs format.</p>
+    <form action="/" method="get">
+        <input type='submit' value='refresh page'>
+    </form>
+      
+    <div>
+      <h3>Upload</h3>
+      <p> Upload an xml file.</p>
+      <form action="/" method="POST" enctype="multipart/form-data">
+        <input type='file' name='xmlfile'>
+        <label type='text'>Name your collection</label>
+        <input type='text' name='collection_id'>
+        <input type='submit' value='transform'>
+      </form>
+    </div>
+    
+    <div>
+      <h3>Current XML to MODs Mapping</h3>
+      <form action="/createHash" method="post" enctype="multipart/form-data">
+      <table>
+        <tr>
+          <th>MODs Tag</th>
+          <th>Excel Column Header</th>
+        </tr>
+        <% @@transformer.modsTags.each do |tag, array| %>
+           <tr>
+             <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+             <% tagInput = "<input type='text' value='#{str}' name='#{tag}'>" %>
+             <td><%= tag %></td>
+             <td><%= tagInput %></td>
+           </tr>
+        <% end %>
+      </table>
+      <input type='submit' value='submit'>
+      </form>
+    </div>
+    
+    <div>
+      <h3>Collections</h3>
+      <table>
+      <tr>
+        <th>Collection</th>
+        <th colspan="2">Tarball</th>
+      </tr>
+      <% @array = @@transformer.listTar %>
+      <% @array.each do |x| %>
+        <% collection_id = File.basename(x, ".tar") %>
+        <% tarLink = "<a href='/#{collection_id}'>Tarball</a>" %>
+        <% deleteTar = "<form action='/remove/#{collection_id}' method='post' >
+            <input type='submit' value='remove'>
+          </form>" %>
+        <tr>
+          <td><%= File.basename(x) %></td>
+          <td><%= tarLink %></td>
+          <td><%= deleteTar %></td>
+        </tr>
+      <% end %>
+    </table>
+    </div>
+    
+    <div>
+      <h3>Submission Errors</h3>
+      <table>
+      <tr>
+        <th>Errors</th>
+        <th colspan="2">Tarball</th>
+      </tr>
+      <% @hash = @@transformer.errors %>
+      <% @hash.each do |key, array| %>
+        <% collection_id = key %>
+        <% deleteHash = "<form action='/delete/#{collection_id}' method='post' >
+            <input type='submit' value='delete'>
+          </form>" %>
+        <% array.each do |error| %>
+        <tr>
+          <td><%= collection_id %></td>
+          <td><%= error %></td>
+          <td><%= deleteHash %>
+        </tr>
+        <% end %>
+      <% end %>
+    </table>
+    </div>
+   
+   </div> 
+    
+  </body>
+</html>

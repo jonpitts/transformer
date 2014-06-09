@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Table>
+  <Row>
+    <Filname>balancia.pdf</Filname>
+    <ID>FA00000426</ID>
+    <Topic>Balance de la Conferencia Interamericana de Chapultepec</Topic>
+    <Author>Confederacion de Trabajadores de America Latina</Author>
+    <Date>1934</Date>
+    <Genre>pamphlets</Genre>
+    <TypeOfResource>text</TypeOfResource>
+  </Row>
+  <Row>
+    <Filname>test.pdf</Filname>
+    <ID>FA00000500</ID>
+    <Topic>Title of the Ages</Topic>
+    <Author>Supreme Pontiff 3rd</Author>
+    <Date>2525</Date>
+    <Genre>all</Genre>
+    <TypeOfResource>text</TypeOfResource>
+  </Row>
+</Table>

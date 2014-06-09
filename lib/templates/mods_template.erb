@@ -1,0 +1,34 @@
+<xsl:template name="mods_template">
+
+        <!-- titleInfo -->
+        <xsl:apply-templates select="Title"/>
+        
+        <!-- identifier -->
+        <xsl:apply-templates select="IID"/>       
+
+        <!-- name -->
+        <xsl:apply-templates select="Creator"/> 
+        <xsl:apply-templates select="Creator2"/>
+
+        <!-- Date -->
+        <xsl:apply-templates select="Date"/> 
+
+        <!-- physical description -->
+        <xsl:apply-templates select="PhysicalDescription" />
+
+        <!-- genre  -->
+        <xsl:apply-templates select="TypeOfResource" />
+
+        <!-- language -->
+        <xsl:apply-templates select="Genre"/>
+
+        <!-- abstract -->
+        <xsl:apply-templates select="Description" />
+
+        <!-- subjects -->
+        <xsl:apply-templates select="Subject" />  
+        
+        <!-- physical location -->
+        <xsl:apply-templates select="PhysicalLocation" />    
+
+</xsl:template>
