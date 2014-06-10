@@ -1,7 +1,7 @@
 class Transformer
   
   #generate xsl based on converted hash
-  def makeXML convertedHash
+  def makeXML convertedHash, institution
 
       xmlStr = ""
       
@@ -46,7 +46,10 @@ class Transformer
       end
       
       xmlStr += "\n</mods>"
-      
+      doc = Nokogiri.XML(xmlStr) do |config|
+        config.default_xml.noblanks
+      end
+      xmlStr = doc.to_xml(:indent => 2)
       xmlStr
 
   end

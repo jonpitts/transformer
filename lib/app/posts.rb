@@ -7,14 +7,13 @@ post '/' do
   filename = params['xmlfile'][:filename]
 
   client = env['REMOTE_ADDR']
-  #file_url = "file://#{client}/#{filename.gsub(%r(^/+), '')}"
   
   collection_id = params[:collection_id] unless params[:collection_id].empty?
-
-  #res = Resolver.new tempfile, collection_id, settings.data_path, file_url
+  institution = params[:institution] unless params[:institution].empty?
   
-  tarball = @@transformer.transform tempfile, collection_id, settings.data_path #produces hash of tags and inner_text
-  #send_file tarball unless tarball == 500
+  #transform xml into mods
+  @@transformer.transform tempfile, collection_id, settings.data_path, institution
+
   redirect '/'
 end
 

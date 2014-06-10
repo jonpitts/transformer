@@ -17,10 +17,11 @@ class Transformer
   
   
   #transform excel xml into mods validated xml files
-  def transform doc, collection_id, dir
+  def transform doc, collection_id, dir, institution
 
-    
     uniqName = createName collection_id
+
+    errorStore(uniqName,"Owning Institution left blank.") if institution.nil?
     
     tmpdir = Dir.mktmpdir ("#{dir}/")
     xmldoc = Nokogiri::XML::Document.parse(doc)
@@ -35,7 +36,7 @@ class Transformer
         break
       end
 
-      xml = makeXML hash
+      xml = makeXML hash, institution
       
       if validate xml, uniqName
         puts "passes mods validation"

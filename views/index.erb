@@ -22,15 +22,19 @@
       <h3>Upload</h3>
       <p> Upload an xml file.</p>
       <form action="/" method="POST" enctype="multipart/form-data">
-        <input type='file' name='xmlfile'>
+        <input type='file' name='xmlfile'><br /><br />
         <label type='text'>Name your collection</label>
-        <input type='text' name='collection_id'>
+        <input type='text' name='collection_id'><br /><br />
+        <label type='text'>Owning Institution</label>
+        <input type='text' name='institution' value='FAU'>
         <input type='submit' value='transform'>
       </form>
     </div>
     
     <div>
       <h3>Current XML to MODs Mapping</h3>
+      <p>Change textfields to match headers in excel file.  Use comma seperated lists
+      if you need to match multiple headers to the same mods tags.</p>
       <form action="/createHash" method="post" enctype="multipart/form-data">
       <table>
         <tr>
