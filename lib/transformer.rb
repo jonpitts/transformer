@@ -27,17 +27,17 @@ class Transformer
     xmldoc = Nokogiri::XML::Document.parse(doc)
     
     xmldoc.xpath("//Row").each do |node|
-
+      #get tags from file
       hash = getTags node
+      #translate these tags into mods equivalent
       hash = translate hash, uniqName
       
-      if @errors.key?(uniqName)
-        puts "bad tags found. breaking..."
-        break
-      end
-
+      break if @errors.key?(uniqName)
+      
+      #make xml - transformation
       xml = makeXML hash, institution
       
+      #validate xml against mods
       if validate xml, uniqName
         puts "passes mods validation"
       else
@@ -46,15 +46,14 @@ class Transformer
       end
       
       fname = hash["filename"]
+      #save the xml generated under filename.xml
       saveXML xml, fname, tmpdir unless fname.nil?
     end
     
-    if xmldoc.xpath("//Row").length == 0
-      errorStore(uniqName,("Not a valid excel xml file"))
-    end
+    errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
     
+    #create package
     tarball tmpdir, uniqName, dir unless @errors.key?(uniqName)
-    
     FileUtils.rm_r tmpdir
 
     if @errors.key?(uniqName)
