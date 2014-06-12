@@ -1,4 +1,4 @@
-require 'singleton'
+#require 'singleton'
 require 'nokogiri'
 require 'erb'
 require 'tmpdir'
@@ -11,19 +11,25 @@ require_relative 'mod_tags'
 include Util::Tar
 
 class Transformer
-  include Singleton
+#  include Singleton
   
   attr_accessor :errors, :data_path, :modsTags
   
+  def initialize data_path
+    @data_path = data_path
+    setTagsDefault
+    @errors = {}
+    errorStore("UUID",[])
+  end
   
   #transform excel xml into mods validated xml files
-  def transform doc, collection_id, dir, institution
+  def transform doc, collection_id, institution
 
     uniqName = createName collection_id
 
     errorStore(uniqName,"Owning Institution left blank.") if institution.nil?
     
-    tmpdir = Dir.mktmpdir ("#{dir}/")
+    tmpdir = Dir.mktmpdir ("#{data_path}/")
     xmldoc = Nokogiri::XML::Document.parse(doc)
     
     xmldoc.xpath("//Row").each do |node|
@@ -53,13 +59,13 @@ class Transformer
     errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
     
     #create package
-    tarball tmpdir, uniqName, dir unless @errors.key?(uniqName)
+    tarball tmpdir, uniqName, data_path unless @errors.key?(uniqName)
     FileUtils.rm_r tmpdir
 
     if @errors.key?(uniqName)
       return 500
     else
-      return File.join(dir, "#{uniqName}.tar")
+      return File.join(data_path, "#{uniqName}.tar")
     end
   end
   

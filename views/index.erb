@@ -13,6 +13,7 @@
     <div id="header">
       <h1>MODs Transformer Service</h1>
     </div>
+    <p>Welcome <%= @user %>!</p>
     <p>This service transforms excel generated xml files into MODs format.</p>
     <form action="/" method="get">
         <input type='submit' value='refresh page'>
@@ -41,7 +42,7 @@
           <th>MODs Tag</th>
           <th>Excel Column Header</th>
         </tr>
-        <% @@transformer.modsTags.each do |tag, array| %>
+        <% @@session[@user].modsTags.each do |tag, array| %>
            <tr>
              <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
              <% tagInput = "<input type='text' value='#{str}' name='#{tag}'>" %>
@@ -61,7 +62,7 @@
         <th>Collection</th>
         <th colspan="2">Tarball</th>
       </tr>
-      <% @array = @@transformer.listTar %>
+      <% @array = @@session[@user].listTar %>
       <% @array.each do |x| %>
         <% collection_id = File.basename(x, ".tar") %>
         <% tarLink = "<a href='/#{collection_id}'>Tarball</a>" %>
@@ -84,7 +85,7 @@
         <th>Errors</th>
         <th colspan="2">Tarball</th>
       </tr>
-      <% @hash = @@transformer.errors %>
+      <% @hash = @@session[@user].errors %>
       <% @hash.each do |key, array| %>
         <% collection_id = key %>
         <% deleteHash = "<form action='/delete/#{collection_id}' method='post' >
