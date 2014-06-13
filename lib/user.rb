@@ -13,6 +13,7 @@ class User
   property :id, Serial
   property :username, String, :length => 3..50, :key => true
   property :password, BCryptHash
+  property :admin, Boolean
   
   has n, :tags
   
@@ -22,6 +23,22 @@ class User
     else
       false
     end
+  end
+  
+  def isAdmin?
+    return self.admin
+  end
+  
+  def setAdminOn
+    self.admin = true
+  end
+  
+  def setAdminOff
+    self.admin = false
+  end
+  
+  def changePassword newPassword
+    self.password = newPassword
   end
   
 end

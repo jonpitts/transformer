@@ -7,6 +7,7 @@ require_relative 'tar'
 require_relative 'validate'
 require_relative 'make_xml'
 require_relative 'mod_tags'
+require_relative 'admin'
 
 include Util::Tar
 

@@ -43,6 +43,27 @@ class Login < Sinatra::Base
     
   end
   
+  helpers do
+    def protected!
+      return if authorized?
+      halt 401, "Not authorized\n"
+    end
+    
+    def authorized?
+      if session['user_name'] && User.first(:username => session['user_name']).isAdmin?
+        puts session['user_name']
+        true
+      else
+        false
+      end
+    end
+  end
+  
+  get '/admin' do
+    protected!
+    erb :admin
+  end
+  
 end
 
 use Login
@@ -58,7 +79,6 @@ end
 before do
   @user = session['user_name']
   redirect '/login' unless @user
-  
 end
 
 begin
