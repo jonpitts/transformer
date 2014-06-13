@@ -12,10 +12,7 @@ class Transformer
     end
   end
   
-  def updateUser username
-    
-  end
-  
+  #remove user
   def removeUser id, username
 
     puts "Removing user id: #{id}"
@@ -23,6 +20,7 @@ class Transformer
     user.destroy unless id == '1'
   end
   
+  #turn admin on or off per user
   def setAdmin id, username
 
     user = User.get(id,username)
@@ -34,6 +32,17 @@ class Transformer
       user.setAdminOn
     end
     userSave user
+  end
+  
+  #change password
+  def changePassword username, password, newPassword
+    user = User.first(:username => username)
+    if user.authenticate password
+      user.changePassword newPassword
+      userSave user
+    else
+      false
+    end
   end
   
 end

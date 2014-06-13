@@ -43,6 +43,16 @@ class Login < Sinatra::Base
     
   end
   
+  get '/logout' do
+    if session['user_name']
+      session.clear
+      redirect '/login'
+    else
+      error 403
+    end
+    
+  end
+  
   helpers do
     def protected!
       return if authorized?

@@ -62,3 +62,18 @@ post '/removeUser' do
   @@session[@user].removeUser id, username
   redirect '/admin'
 end
+
+post '/changePassword' do
+  error 400, "Missing user name" unless params[:name]
+  error 400, "Missing password" unless params[:password]
+  error 400, "Missing new password" unless params[:newPassword]
+  error 400, "Missing confirm password" unless params[:confirm]
+  
+  error 400, "Passwords do not match" unless params[:newPassword] == params[:confirm]
+  
+  if @@session[@user].changePassword params[:name], params[:password], params[:newPassword]
+    redirect '/login'
+  else
+    error 400, "Incorrect password"
+  end
+end

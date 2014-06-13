@@ -4,6 +4,10 @@ get '/' do
   erb :index
 end
 
+get '/user' do
+  erb :user
+end
+
 get '/:collection_id' do |collection_id|
   tarball = "#{@@session[@user].data_path}/#{collection_id}.tar"
   puts tarball
