@@ -73,7 +73,10 @@ class Transformer
     puts 'loading tags'
     @modsTags = {}
     user.tags.each do |tag|
-      @modsTags.store(tag.tag_name,tag.tag_assoc)
+      tag_name = tag.tag_name
+      tag_assoc = tag.tag_assoc.gsub(/[\[\"\]]/,'').split(',')
+      puts "#{tag_assoc}"
+      @modsTags.store(tag_name,tag_assoc)
     end
   end
   

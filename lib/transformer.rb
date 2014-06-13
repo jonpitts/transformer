@@ -106,6 +106,7 @@ class Transformer
           
           #if substring exists then store as new hash element
           if smallStr.downcase.include? bigStr.downcase
+          #if definition.downcase == modTag.downcase
             convertedTags.store(modTag, inner_text)
             found = true
           end
