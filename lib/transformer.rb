@@ -13,13 +13,13 @@ include Util::Tar
 class Transformer
 #  include Singleton
   
-  attr_accessor :errors, :data_path, :modsTags
+  attr_accessor :errors, :data_path, :modsTags, :user_name
   
-  def initialize data_path
+  def initialize data_path, user_name
+    @user_name = user_name
     @data_path = data_path
     setTagsDefault
     @errors = {}
-    errorStore("UUID",[])
   end
   
   #transform excel xml into mods validated xml files

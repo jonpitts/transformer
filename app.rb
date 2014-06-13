@@ -9,6 +9,7 @@ require 'nokogiri'
 require 'sinatra'
 require_relative 'lib/transformer'
 require_relative 'lib/user'
+require_relative 'lib/tag'
 
 
 enable :sessions
@@ -31,7 +32,8 @@ class Login < Sinatra::Base
     if user.authenticate password
       session['user_name'] = user.username
       session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
-      @transformer = Transformer.new session['user_path']
+      userTags = user.tags
+      @transformer = Transformer.new session['user_path'], session['user_name']
       @@session.store(session['user_name'], @transformer)
       redirect '/'
     else

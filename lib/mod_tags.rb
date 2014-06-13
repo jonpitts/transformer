@@ -2,7 +2,9 @@ class Transformer
   
   #set initial modsTags definitions
   def setTagsDefault
-    @modsTags = 
+    user = User.first(:username => @user_name)
+    if user.tags.count == 0
+      @modsTags = 
         { 
           "filename" => ["Filename","datafile"], #used to associate with file
           "title" => ["Title"],
@@ -17,6 +19,23 @@ class Transformer
           "subject" => ["Subject"],
           "physicalLocation" => ["PhysicalLocation"],
         }
+      saveTags user
+      userSave user
+    else
+      loadTags user
+    end
+  end
+  
+  #save user changes
+  def userSave user
+    user.transaction do |t|
+    begin
+      user.save
+    rescue Exception => e
+      t.rollback
+      puts e.message
+      end
+    end
   end
   
   #set user defined hash definitions
@@ -26,5 +45,36 @@ class Transformer
       array.each {|x| x.strip!}
       modsTags[key] = array
     end
+    user = User.first(:username => @user_name)
+    updateTags user
   end
+  
+  #save user tags - for new user and tags
+  def saveTags user
+    puts 'saving tags'
+    @modsTags.each do |modtag, modassoc|
+      tag = Tag.new(:tag_name => modtag, :tag_assoc => modassoc)
+      user.tags << tag
+    end
+  end
+  
+  #update user tags
+  def updateTags user
+    puts 'updating tags'
+    @modsTags.each do |modtag, modassoc|
+      tag =  user.tags.first(:tag_name => modtag)
+      tag.update(:tag_assoc => modassoc)
+      #tag.update
+    end
+  end
+  
+  #load saved user tags
+  def loadTags user
+    puts 'loading tags'
+    @modsTags = {}
+    user.tags.each do |tag|
+      @modsTags.store(tag.tag_name,tag.tag_assoc)
+    end
+  end
+  
 end
