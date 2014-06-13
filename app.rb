@@ -8,8 +8,8 @@ require 'bundler/setup'
 require 'nokogiri'
 require 'sinatra'
 require_relative 'lib/transformer'
-require_relative 'lib/user'
-require_relative 'lib/tag'
+require_relative 'lib/model/user'
+require_relative 'lib/model/tag'
 
 
 enable :sessions
