@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>MODs Transformer Service</title>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+  </head>
+  <body>
+  
+  <div id="content">
+  
+    <div id="nav">
+      <ul>
+          <li><a href="/user">Change user settings</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><a href="/admin">Admin</a></li>
+      </ul>
+    </div>
+  
+    <div id="header">
+      <h1>MODs Transformer Service</h1>
+    </div>
+    <p>Hello <%= @user %>.</p>
+      
+    <div>
+      <h3>User Page</h3>
+      <p>Change Password</p>
+      <form action="/changePassword" method="POST" enctype="multipart/form-data">
+        <input type='text' name='name' value='<%= @user %>'>
+        <label type='text'>Current Password</label>
+        <input type='password' name='password'><br /><br />
+        <label type='text'>New Password</label>
+        <input type='password' name='newPassword'><br /><br />
+        <label type='text'>Confirm Password</label>
+        <input type='password' name='confirm'>
+        <input type='submit' value='update'>
+      </form>
+    </div>
+    
+    
+   </div> 
+  </body>
+</html>
