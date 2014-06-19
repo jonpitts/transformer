@@ -84,6 +84,7 @@ class Transformer
   
   
   #associate excel xml tag with mods tag
+  #uses a simple algorithm to check for substring
   def translate hash, uniqName
     convertedTags = {}
     
