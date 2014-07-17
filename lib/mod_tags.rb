@@ -6,10 +6,10 @@ class Transformer
     if user.tags.count == 0
       @modsTags = 
         { 
-          "filename" => ["Filename","datafile"], #used to associate with file
+          "filename" => ["Filename","file"], #used to associate with file
           "title" => ["Title"],
           "identifier" => ["IID"],
-          "artist" => ["Creator"],  #name tag
+          "artist" => ["Creator", "Artist"],  #name tag
           "author" => ["Creator2", "Author"], #name tag
           "dateIssued" => ["Date"],
           "physicalDescription" => ["PhysicalDescription"],

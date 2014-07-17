@@ -11,6 +11,8 @@ require_relative 'lib/transformer'
 require_relative 'lib/model/user'
 require_relative 'lib/model/tag'
 
+#Transformer service for converting excel generated xml into mods format.
+#Initial author: Jonathan Pitts, 2014
 
 enable :sessions
 @@transformer

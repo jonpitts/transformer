@@ -1,9 +1,6 @@
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
-#require 'highline/import/'
-# require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
 
 # Basic settings:
@@ -13,7 +10,7 @@ require 'mina/git'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :domain, ''
-set :deploy_to, '/opt/web-services/sites/mods-transformer'
+set :deploy_to, '/var/www/transformer'
 set :repository, 'ssh://fclacode.fcla.edu/data/git/DLS/mods-transformer.git'
 set :branch, 'master'
 set :term_mode, :system
