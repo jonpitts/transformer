@@ -60,13 +60,13 @@ class Transformer
     errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
     
     #create package
-    tarball tmpdir, uniqName, data_path unless @errors.key?(uniqName)
+    package tmpdir, uniqName, data_path unless @errors.key?(uniqName)
     FileUtils.rm_r tmpdir
 
     if @errors.key?(uniqName)
       return 500
     else
-      return File.join(data_path, "#{uniqName}.tar")
+      return File.join(data_path, "#{uniqName}.zip")
     end
   end
   
@@ -137,30 +137,32 @@ class Transformer
   end
   
   
-  ##tarball method##
-  def tarball tmpdir, fname, dir
+  ##package method##
+  def package tmpdir, fname, dir
     
     begin
-      io = tar(tmpdir)
-      fname = "#{fname}.tar"
+      #io = tar(tmpdir)
+      fname = "#{fname}.zip"
       fname = File.join(tmpdir, fname)
-      file = File.new(fname, 'w') 
-      file.write(io.string)
+      #file = File.new(fname, 'w') 
+      #file.write(io.string)
+      puts fname
+      zip(fname, tmpdir)
     ensure
-      file.close
+      #file.close
       FileUtils.mv fname, dir
     end
   end
   
   ##remove tarball##
-  def remove tarball
-    FileUtils.rm tarball if File.exist?(tarball)
+  def remove package
+    FileUtils.rm package if File.exist?(package)
   end
   
-  #list tarballs
-  def listTar
-    tarfiles = File.join(data_path, '/', '*.tar')
-    Dir.glob(tarfiles)
+  #list Packages
+  def listPackages
+    files = File.join(data_path, '/', '*.zip')
+    Dir.glob(files)
   end
   
   #hash helper method for errors
@@ -187,8 +189,8 @@ class Transformer
       UUID.generate 
     else
       errorRemove collection_id
-      tarball = "#{data_path}/#{collection_id}.tar"
-      remove tarball
+      package = "#{data_path}/#{collection_id}.zip"
+      remove package
       collection_id
     end
   end

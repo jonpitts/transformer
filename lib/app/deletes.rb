@@ -1,8 +1,8 @@
 #browsers without html 5 do not support delete method - below method is used in gui
 post '/remove/:collection_id' do |collection_id|
-  tarball = "#{@@session[@user].data_path}/#{collection_id}.tar"
-  error 400, "No such file #{collection_id}.tar" unless File.exist?(tarball)
-  @@session[@user].remove tarball
+  package = "#{@@session[@user].data_path}/#{collection_id}.zip"
+  error 400, "No such file #{collection_id}.zip" unless File.exist?(package)
+  @@session[@user].remove package
   @@session[@user].errorRemove collection_id
   redirect "/", 301
 end

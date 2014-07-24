@@ -74,7 +74,7 @@ class Transformer
     @modsTags = {}
     user.tags.each do |tag|
       tag_name = tag.tag_name
-      tag_assoc = tag.tag_assoc.gsub(/[\[\"\]]/,'').split(',')
+      tag_assoc = tag.tag_assoc.gsub(/[\[\"\ \]]/,'').split(',')
       puts "#{tag_assoc}"
       @modsTags.store(tag_name,tag_assoc)
     end

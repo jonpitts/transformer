@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rubygems/package'
 require 'zlib'
 require 'fileutils'
+require 'zip'
 
 #Copyright (C) 2011 by Colin MacKenzie IV
 
@@ -23,13 +24,34 @@ require 'fileutils'
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
+#Modification: Jonathan Pitts 2014
+#Modified this module to include a Zip module and method
+
+
 module Util
+  
   module Tar
     # Creates a tar file in memory recursively
     # from the given path.
     #
     # Returns a StringIO whose underlying String
     # is the contents of the tar file.
+    
+    
+    # Creates a zip fileutils
+    # Two parameters: zipfile_name, path to folder of collection to zip
+    def zip(zipfile_name, path)
+      puts zipfile_name
+      puts "what?"
+      Zip::File.open(zipfile_name, Zip::File::CREATE) do |zf|
+        Dir[File.join(path, "**/*")].each do |file|
+          puts file
+          zf.add(File.basename(file), file)
+        end
+      end
+    end
+    
+    
     def tar(path)
       tarfile = StringIO.new("")
       Gem::Package::TarWriter.new(tarfile) do |tar|

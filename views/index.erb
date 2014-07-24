@@ -69,19 +69,19 @@
       <table>
       <tr>
         <th>Collection</th>
-        <th colspan="2">Tarball</th>
+        <th colspan="2">Package</th>
       </tr>
-      <% @array = @@session[@user].listTar %>
+      <% @array = @@session[@user].listPackages %>
       <% @array.each do |x| %>
-        <% collection_id = File.basename(x, ".tar") %>
-        <% tarLink = "<a href='/#{collection_id}'>Tarball</a>" %>
-        <% deleteTar = "<form action='/remove/#{collection_id}' method='post' >
+        <% collection_id = File.basename(x, ".zip") %>
+        <% packageLink = "<a href='/#{collection_id}'>Package</a>" %>
+        <% deletePackage = "<form action='/remove/#{collection_id}' method='post' >
             <input type='submit' value='remove'>
           </form>" %>
         <tr>
           <td><%= File.basename(x) %></td>
-          <td><%= tarLink %></td>
-          <td><%= deleteTar %></td>
+          <td><%= packageLink %></td>
+          <td><%= deletePackage %></td>
         </tr>
       <% end %>
     </table>
@@ -92,7 +92,7 @@
       <table>
       <tr>
         <th>Errors</th>
-        <th colspan="2">Tarball</th>
+        <th colspan="2">Package</th>
       </tr>
       <% @hash = @@session[@user].errors %>
       <% @hash.each do |key, array| %>

@@ -9,8 +9,8 @@ get '/user' do
 end
 
 get '/:collection_id' do |collection_id|
-  tarball = "#{@@session[@user].data_path}/#{collection_id}.tar"
-  puts tarball
-  error 400, "No such file #{collection_id}.tar" unless File.exist?(tarball)
-  send_file tarball
+  package = "#{@@session[@user].data_path}/#{collection_id}.zip"
+  puts package
+  error 400, "No such file #{collection_id}.zip" unless File.exist?(package)
+  send_file package
 end
