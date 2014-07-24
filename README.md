@@ -6,6 +6,15 @@ Excel has been a popular tool for cataloging library meta-data.
 It is much better to store this type of data in xml following a schema.
 Mods is one particular schema for doing this.
 
+Quick Setup:
+------------
+  * `bundle install --path bundle`
+  * `bundle exec ruby setup.rb`
+    * setup will attempt to backup a db if it sees one and will complain if it sees you have not moved a backup.
+  * `bundle exec ruby app.rb`
+  * navigate your browser to 0.0.0.0:4567
+    * login with user: `admin` & password: `admin`
+
 General Operation:
 ------------------
   
@@ -29,12 +38,15 @@ Transformation:
 Ruby Requirements:
 ------------------
   * ruby 1.9.3
-  * sinatra
-  * nokogiri
-  * uuid
-  * data_mapper
-  * dm-sqlite-adapter
-  * rubyzip
+  * bundler
+    * sinatra
+    * nokogiri
+    * uuid
+    * data_mapper
+    * dm-sqlite-adapter
+    * rubyzip
+    * rack
+    * thin
   
 Other Requirements:
 -------------------
