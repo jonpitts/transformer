@@ -3,13 +3,13 @@ require 'nokogiri'
 require 'erb'
 require 'tmpdir'
 require 'uuid'
-require_relative 'tar'
+require_relative 'utils'
 require_relative 'validate'
 require_relative 'make_xml'
 require_relative 'mod_tags'
 require_relative 'admin'
 
-include Util::Tar
+include Util::Zipper
 
 class Transformer
 #  include Singleton
