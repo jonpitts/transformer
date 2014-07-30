@@ -26,6 +26,11 @@ post '/createHash' do
   redirect '/'
 end
 
+post '/reset' do
+  @@session[@user].reset
+  redirect '/'
+end
+
 post '/newUser' do
   error 400, "Missing user name" unless params[:name]
   error 400, "Missing password" unless params[:password]

@@ -48,19 +48,42 @@
       <form action="/createHash" method="post" enctype="multipart/form-data">
       <table>
         <tr>
-          <th>MODs Tag</th>
+          <th>MODS filename</th>
+          <th>Excel Column Header</th>
+        </tr>
+        <tr>
+          <td>filename</td>
+          <% array = @@session[@user].modsTags['filename'] %>
+          <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+          <% tagInput = "<input type='text' value='#{str}' name='filename'>" %>
+          <td><%= tagInput %></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>MODs Tags and Attributes</th>
           <th>Excel Column Header</th>
         </tr>
         <% @@session[@user].modsTags.each do |tag, array| %>
+          <% next if tag == 'filename' %>
            <tr>
              <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
              <% tagInput = "<input type='text' value='#{str}' name='#{tag}'>" %>
+             <% note = @@session[@user].notes[tag] %>
+             <% if note.length > 0 %>
+               <% tag = tag + ' (' + note + ')' %>
+             <% end %>
              <td><%= tag %></td>
              <td><%= tagInput %></td>
            </tr>
         <% end %>
       </table>
       <input type='submit' value='submit'>
+      </form>
+      
+      <h4>Reset Mapping</h4>
+      <form action="/reset" method="post">
+        <input type='submit' value='reset tags'/>
       </form>
     </div>
     

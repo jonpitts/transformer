@@ -12,7 +12,6 @@ module Util
     # Two parameters: zipfile_name, path to folder of collection to zip
     def zip(zipfile_name, path)
       puts zipfile_name
-      puts "what?"
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zf|
         Dir[File.join(path, "**/*")].each do |file|
           puts file

@@ -8,22 +8,49 @@ class Transformer
         { 
           "filename" => ["Filename","file"], #used to associate with file
           "title" => ["Title"],
+          "alternative" => ["Alternative_Title"],
           "identifier" => ["IID"],
-          "artist" => ["Creator", "Artist"],  #name tag
-          "author" => ["Creator2", "Author"], #name tag
+          "author" => ["Author"], #name tag
+          "artist" => ["Artist"],  #name tag
+          "personal" => ["Personal"],
+          "corporate" => ["Corporate"], #name tag
           "dateIssued" => ["Date"],
           "physicalDescription" => ["PhysicalDescription"],
           "genre" => ["Genre"],
           "typeOfResource" => ["TypeOfResource"],
           "note" => ["Description"],
-          "subject" => ["Subject"],
+          "topic" => ["Subject"],
+          "geographic" => ["Geographic"],
           "physicalLocation" => ["PhysicalLocation"],
+          "lcsh" => ["subject-lcsh"]
         }
       saveTags user
       userSave user
     else
       loadTags user
     end
+  end
+  
+  def notes
+  { 
+    "filename" => "used for file creation",
+    "title" => "",
+    "alternative" => "alternative title",
+    "identifier" => "",
+    "author" => "name",
+    "artist" => "name",
+    "personal" => "name",
+    "corporate" => "name",
+    "dateIssued" => "name",
+    "physicalDescription" => "",
+    "genre" => "",
+    "typeOfResource" => "",
+    "note" => "",
+    "topic" => "topic subject",
+    "geographic" => "geographic subject",
+    "physicalLocation" => "",
+    "lcsh" => "subject authority lcsh"
+  }
   end
   
   #save user changes
@@ -64,7 +91,6 @@ class Transformer
     @modsTags.each do |modtag, modassoc|
       tag =  user.tags.first(:tag_name => modtag)
       tag.update(:tag_assoc => modassoc)
-      #tag.update
     end
   end
   
@@ -78,6 +104,15 @@ class Transformer
       puts "#{tag_assoc}"
       @modsTags.store(tag_name,tag_assoc)
     end
+  end
+  
+  #reset saved tags to default
+  def reset
+    user = User.first(:username => @user_name)
+    puts 'deleting tags'
+    user.tags.all.destroy
+    puts 'loading default tags'
+    setTagsDefault
   end
   
 end
