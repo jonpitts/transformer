@@ -40,6 +40,17 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
+        when 'corporate'
+          node = newNode 'name', inner_text, doc, 'corporate', 'namePart', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
+        when 'personal'
+          node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
+          node['usage'] = 'primary'
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'dateIssued'
           node = newNode 'dateIssued', inner_text, doc, nil, nil, nil
           parent = doc.at_css('originInfo')
@@ -88,6 +99,44 @@ class Transformer
         when 'lcsh'
           node = newNode 'subject', inner_text, doc, nil, 'topic', nil
           parent = doc.at_css('mods')
+          parent << node
+        
+        when 'accessCondition'
+          node = newNode 'accessCondition', inner_text, doc, 'use and reproduction', nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+          
+        when 'dateCreated'
+          node = newNode 'dateCreated', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('originInfo')
+          parent << node
+        
+        when 'namePartDate'
+          node = newNode 'namePart', inner_text, doc, 'date', nil, nil
+          parent = doc.at_css('name[usage=primary]')
+          if parent != nil
+            parent << node
+          else
+            name = newNode 'name', '', doc, nil, nil, nil
+            name['usage'] = 'primary'
+            name << node
+            parent = doc.at_css('mods')
+            parent << name
+          end       
+          
+        when 'issuance'
+          node = newNode 'issuance', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('originInfo')
+          parent << node
+          
+        when 'place'
+          node = newNode 'place', inner_text, doc, 'placeTerm', nil, 'text'
+          parent = doc.at_css('originInfo')
+          parent << node
+          
+        when 'publisher'
+          node = newNode 'publisher', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('originInfo')
           parent << node
           
         end

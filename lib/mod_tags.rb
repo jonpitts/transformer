@@ -22,7 +22,13 @@ class Transformer
           "topic" => ["Subject"],
           "geographic" => ["Geographic"],
           "physicalLocation" => ["PhysicalLocation"],
-          "lcsh" => ["subject-lcsh"]
+          "lcsh" => ["subject-lcsh"],
+          "accessCondition" => ["Rights"],
+          "dateCreated" => ["Created"],
+          "namePartDate" => ["Creator_Dates"],
+          "issuance" => ["Issuance"],
+          "place" => ["Place"],
+          "publisher" => ["Publisher"]
         }
       saveTags user
       userSave user
@@ -37,10 +43,10 @@ class Transformer
     "title" => "",
     "alternative" => "title",
     "identifier" => "",
-    "author" => "namePart",
-    "artist" => "namePart",
-    "personal" => "namePart",
-    "corporate" => "namePart",
+    "author" => "name usage=primary",
+    "artist" => "name",
+    "personal" => "name usage=primary",
+    "corporate" => "name",
     "dateIssued" => "originInfo",
     "physicalDescription" => "",
     "genre" => "",
@@ -49,7 +55,13 @@ class Transformer
     "topic" => "subject",
     "geographic" => "subject",
     "physicalLocation" => "",
-    "lcsh" => "subject authority lcsh"
+    "lcsh" => "subject authority lcsh",
+    "accessCondition" => "",
+    "dateCreated" => "originInfo",
+    "namePartDate" => "namePart type=date",
+    "issuance" => "originInfo",
+    "place" => "originInfo",
+    "publisher" => "originInfo"
   }
   end
   
