@@ -2,68 +2,122 @@ class Transformer
   
   #generate xml based on converted hash
   def makeXML convertedHash, institution
-
-      xmlStr = ""
       
       template_file = File.open("lib/templates/layout.erb", 'r').read
-      xmlStr += "\n" + ERB.new(template_file).result(binding)
-      originStr = "<originInfo>"
+      xmlStr = ERB.new(template_file).result(binding)
+      doc = Nokogiri.XML(xmlStr,&:noblanks)
       
       convertedHash.each do |tag, inner_text|
         
-        origin = nil #originInfo component
-        template = nil #other template
-        
         case tag
         when 'title'
-          template = "lib/templates/title_template.erb"
+          node = newNode 'titleInfo', inner_text, doc, nil, 'title', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'alternative'
-          template = "lib/templates/title_alt_template.erb"
+          node = newNode 'titleInfo', inner_text, doc, 'alternative', 'title', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'identifier'
-          template = "lib/templates/iid_template.erb"
+          node = newNode 'identifier', inner_text, doc, 'IID', nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'artist'
-          template = "lib/templates/artist_template.erb"
+          node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
+          role = newNode 'role', 'artist', doc, nil, 'roleTerm', 'text'
+          node << role
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'author'
-          template = "lib/templates/author_template.erb"
+          node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
+          node['usage'] = 'primary'
+          role = newNode 'role', 'author', doc, nil, 'roleTerm', 'text'
+          node << role
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'dateIssued'
-          origin = "lib/templates/issued_template.erb"
+          node = newNode 'dateIssued', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('originInfo')
+          parent << node
+          
         when 'physicalDescription'
-          template = "lib/templates/physical_desc_template.erb"
+          parent = doc.at_css('physicalDescription')
+          if parent == nil
+            node = newNode 'physicalDescription', '', doc, nil, nil, nil
+            parent = doc.at_css('mods')
+            parent << node
+          end
+          node = newNode 'form', inner_text, doc, nil, nil, nil
+          parent << node
+          
         when 'genre'
-          template = "lib/templates/genre_template.erb"
+          node = newNode 'genre', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'typeOfResource'
-          template = "lib/templates/type_of_res_template.erb"
+          node = newNode 'typeOfResource', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'note'
-          template = "lib/templates/description_template.erb"
+          node = newNode 'note', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'subject'
-          template = "lib/templates/subject_topic_template.erb"
+          node = newNode 'subject', inner_text, doc, nil, 'topic', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'geographic'
-          template = "lib/templates/subject_geo_template.erb"
+          node = newNode 'subject', inner_text, doc, nil, 'geographic', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'physicalLocation'
-          template = "lib/templates/physical_loc_template.erb"
+          node = newNode 'physicalLocation', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('location')
+          parent << node
+          
         when 'lcsh'
-          template = "lib/templates/subject_lcsh_template.erb"
+          node = newNode 'subject', inner_text, doc, nil, 'topic', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         end
-        
-        if template
-          template_file = File.open(template, 'r').read
-          xmlStr += "\n" + ERB.new(template_file).result(binding)
-        elsif origin
-          template_file = File.open(origin, 'r').read
-          originStr += "\n" + ERB.new(template_file).result(binding)
-        end
-        
-        #template_file = File.open("views/layout.erb", 'r').read
-        #ERB.new(template_file).result(binding)
+
       end
-      originStr += "\n</originInfo>"
-      xmlStr += originStr #insert originInfo into xmlStr
-      xmlStr += "\n</mods>"
-      doc = Nokogiri.XML(xmlStr) do |config|
-        config.default_xml.noblanks
-      end
+
       xmlStr = doc.to_xml(:indent => 2)
       xmlStr
 
   end
+  
+  #create basic node and subnode structure
+  def newNode tagName, inner_text, doc, type, subTagName, subTagType
+    node = Nokogiri::XML::Node.new tagName, doc
+    
+    if type
+      node['type'] = type
+    end
+    
+    if subTagName
+      subNode = Nokogiri::XML::Node.new subTagName, doc
+      if subTagType
+        subNode['type'] = subTagType
+      end
+      subNode.content = inner_text
+      node << subNode
+    else
+      node.content = inner_text
+    end
+    node
+  end
+  
 end

@@ -1,6 +1,6 @@
 class Transformer
   
-  #set initial modsTags definitions
+  #set initial modsTags and attribute definitions
   def setTagsDefault
     user = User.first(:username => @user_name)
     if user.tags.count == 0
@@ -10,10 +10,10 @@ class Transformer
           "title" => ["Title"],
           "alternative" => ["Alternative_Title"],
           "identifier" => ["IID"],
-          "author" => ["Author"], #name tag
-          "artist" => ["Artist"],  #name tag
+          "author" => ["Author"],
+          "artist" => ["Artist"],
           "personal" => ["Personal"],
-          "corporate" => ["Corporate"], #name tag
+          "corporate" => ["Corporate"],
           "dateIssued" => ["Date"],
           "physicalDescription" => ["PhysicalDescription"],
           "genre" => ["Genre"],
@@ -35,19 +35,19 @@ class Transformer
   { 
     "filename" => "used for file creation",
     "title" => "",
-    "alternative" => "alternative title",
+    "alternative" => "title",
     "identifier" => "",
-    "author" => "name",
-    "artist" => "name",
-    "personal" => "name",
-    "corporate" => "name",
-    "dateIssued" => "name",
+    "author" => "namePart",
+    "artist" => "namePart",
+    "personal" => "namePart",
+    "corporate" => "namePart",
+    "dateIssued" => "originInfo",
     "physicalDescription" => "",
     "genre" => "",
     "typeOfResource" => "",
     "note" => "",
-    "topic" => "topic subject",
-    "geographic" => "geographic subject",
+    "topic" => "subject",
+    "geographic" => "subject",
     "physicalLocation" => "",
     "lcsh" => "subject authority lcsh"
   }
