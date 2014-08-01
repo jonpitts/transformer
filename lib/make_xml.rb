@@ -1,13 +1,15 @@
 class Transformer
   
   #generate xml based on converted hash
-  def makeXML convertedHash, institution
+  def makeXML arrayHash, institution
       
       template_file = File.open("lib/templates/layout.erb", 'r').read
       xmlStr = ERB.new(template_file).result(binding)
       doc = Nokogiri.XML(xmlStr,&:noblanks)
       
-      convertedHash.each do |tag, inner_text|
+      arrayHash.each do |hash|
+
+        tag, inner_text = hash.first
         
         case tag
         when 'title'
@@ -63,6 +65,7 @@ class Transformer
             parent = doc.at_css('mods')
             parent << node
           end
+          parent = doc.at_css('physicalDescription')
           node = newNode 'form', inner_text, doc, nil, nil, nil
           parent << node
           
@@ -72,7 +75,7 @@ class Transformer
           parent << node
           
         when 'typeOfResource'
-          node = newNode 'typeOfResource', inner_text, doc, nil, nil, nil
+          node = newNode 'typeOfResource', inner_text.downcase!, doc, nil, nil, nil
           parent = doc.at_css('mods')
           parent << node
           
@@ -81,7 +84,7 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
-        when 'subject'
+        when 'topic'
           node = newNode 'subject', inner_text, doc, nil, 'topic', nil
           parent = doc.at_css('mods')
           parent << node
@@ -98,6 +101,7 @@ class Transformer
           
         when 'lcsh'
           node = newNode 'subject', inner_text, doc, nil, 'topic', nil
+          node['authority'] = 'lcsh'
           parent = doc.at_css('mods')
           parent << node
         
@@ -130,12 +134,25 @@ class Transformer
           parent << node
           
         when 'place'
-          node = newNode 'place', inner_text, doc, 'placeTerm', nil, 'text'
+          node = newNode 'place', inner_text, doc, nil, 'placeTerm', 'text'
           parent = doc.at_css('originInfo')
           parent << node
           
         when 'publisher'
           node = newNode 'publisher', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('originInfo')
+          parent << node
+          
+        when 'language'
+          node = newNode 'language', inner_text, doc, nil, 'languageTerm', 'text'
+          parent = doc.at_css('mods')
+          parent << node
+          
+        when 'iso-lang'
+          languageTerm = newNode 'languageTerm', inner_text, doc, 'code', nil, nil
+          languageTerm['authority']='iso639-2b'
+          node = newNode 'language', '', doc, nil, nil, nil
+          node << languageTerm
           parent = doc.at_css('originInfo')
           parent << node
           

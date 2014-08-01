@@ -28,7 +28,9 @@ class Transformer
           "namePartDate" => ["Creator_Dates"],
           "issuance" => ["Issuance"],
           "place" => ["Place"],
-          "publisher" => ["Publisher"]
+          "publisher" => ["Publisher"],
+          "language" => ["Language"],
+          "iso-lang" => ["iso-lang"]
         }
       saveTags user
       userSave user
@@ -61,7 +63,9 @@ class Transformer
     "namePartDate" => "namePart type=date",
     "issuance" => "originInfo",
     "place" => "originInfo",
-    "publisher" => "originInfo"
+    "publisher" => "originInfo",
+    "language" => "",
+    "iso-lang" => ""
   }
   end
   

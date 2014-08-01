@@ -37,12 +37,12 @@ class Transformer
       #get tags from file
       hash = getTags node
       #translate these tags into mods equivalent
-      hash = translate hash, uniqName
+      hashArray = translate hash, uniqName
       
       break if @errors.key?(uniqName)
       
       #make xml - transformation
-      xml = makeXML hash, institution
+      xml = makeXML hashArray, institution
       
       #validate xml against mods
       if validate xml, uniqName
@@ -51,8 +51,8 @@ class Transformer
         puts "failed mods validation"
         break
       end
-      
-      fname = hash["filename"]
+      fname = hashArray[0]
+      fname = fname.values[0]
       #save the xml generated under filename.xml
       saveXML xml, fname, tmpdir unless fname.nil?
     end
@@ -86,7 +86,7 @@ class Transformer
   #associate excel xml tag with mods tag
   #uses a simple algorithm to check for substring
   def translate hash, uniqName
-    convertedTags = {}
+    convertedTags = []
     
     hash.each do |excelTag, inner_text|
       
@@ -106,9 +106,9 @@ class Transformer
           end
           
           #if substring exists then store as new hash element
-          if smallStr.downcase.include? bigStr.downcase
+          if bigStr.downcase.include? smallStr.downcase
           #if definition.downcase == modTag.downcase
-            convertedTags.store(modTag, inner_text)
+            convertedTags << Hash[modTag, inner_text]
             found = true
           end
         end
