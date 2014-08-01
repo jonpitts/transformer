@@ -53,6 +53,11 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
+        when 'secondary'
+          node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
+          parent = doc.at_css('mods')
+          parent << node
+          
         when 'dateIssued'
           node = newNode 'dateIssued', inner_text, doc, nil, nil, nil
           parent = doc.at_css('originInfo')
@@ -153,7 +158,7 @@ class Transformer
           languageTerm['authority']='iso639-2b'
           node = newNode 'language', '', doc, nil, nil, nil
           node << languageTerm
-          parent = doc.at_css('originInfo')
+          parent = doc.at_css('mods')
           parent << node
           
         end
