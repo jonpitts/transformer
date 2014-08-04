@@ -80,3 +80,11 @@ tr:hover {
   background-color: #65A5D1;
 }
 
+#submitted {
+  color: blue;
+}
+
+#error {
+  color: red;
+  font-weight: bold;
+}

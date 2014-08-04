@@ -10,11 +10,18 @@ $(document).ready(function() {
     var fileInput = $("#fileInput");
     fileInput.val("").replaceWith ( fileInput = fileInput.clone(true));
     
+    //remove error message
+    if(document.getElementById("error")) {
+      var parent = document.getElementById("theForm")
+      var child = document.getElementById("error");
+      parent.removeChild(child);
+    }
+    
     //create sent message if it does not exist
-    if(!document.getElementById("success")) {
+    if(!document.getElementById("submitted")) {
       var label = document.createElement("span");
       var t = document.createTextNode("Submitted");
-      label.id = "success"
+      label.id = "submitted";
       label.appendChild(t);
       document.getElementById("theForm").appendChild(label);
     }
@@ -38,6 +45,19 @@ $(document).ready(function() {
       error: function(jqXHR, textStatus, errorThrown)
       {
         alert("Error: "+errorThrown+": "+jqXHR.responseText);
+        
+        //remove submit message
+        if(document.getElementById("submitted")) {
+          var parent = document.getElementById("theForm")
+          var child = document.getElementById("submitted");
+          parent.removeChild(child);
+        }
+        //create error message
+        var label = document.createElement("span");
+        var t = document.createTextNode("Submission error");
+        label.id = "error";
+        label.appendChild(t);
+        document.getElementById("theForm").appendChild(label);
       }
     });
 

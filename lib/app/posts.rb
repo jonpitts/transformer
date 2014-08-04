@@ -2,11 +2,25 @@
 
 #ajax post
 post '/' do
-  puts 'testing'
+  #if ajax request
   if request.xhr?
-    #puts params
-    error 400, "Missing Data" unless params['xmlfile']
-    error 400, "Missing Data" if params['xmlfile'].empty?
+    unless params['xmlfile']
+      status 400
+      body "Missing filename"
+      halt status, body
+    end
+    
+    if params['xmlfile'].empty?
+      status 400
+      body "Missing Data"
+      halt status, body
+    end
+    
+    if params[:institution].empty?
+      status 400
+      body "Owning institution left blank"
+      halt status, body
+    end
     
     tempfile = params['xmlfile'][:tempfile]
     filename = params['xmlfile'][:filename]
@@ -22,9 +36,10 @@ post '/' do
   else
     "Ajax request not found.  Check your browser settings"
   end
-  #redirect '/'
+
 end
 
+#non ajax post method
 post '/nonajaxpost' do
   error 400, "Missing Data" unless params['xmlfile']
   error 400, "Missing Data" if params['xmlfile'].empty?
