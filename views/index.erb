@@ -73,7 +73,7 @@
              <% tagInput = "<input type='text' value='#{str}' name='#{tag}'>" %>
              <% note = @@session[@user].notes[tag] %>
              <% if note.length > 0 %>
-               <% tag = tag + ' (' + note + ')' %>
+               <% tag = note %>
              <% end %>
              <td><%= tag %></td>
              <td><%= tagInput %></td>
