@@ -57,5 +57,5 @@ Reasons for this project
   * Provide a web-service for converting xml into mods.
   * Simplify process of converting xml files into mods.
     * Typically transformations require stylesheets and can be difficult to maintain.
-    * Transformer relies on erb templates instead which can be modified and added to.
+    * Transformer now uses xml node manipulation for creating the mods xml.
   
