@@ -1,5 +1,31 @@
 #GUI - Post something to service#
+
+#ajax post
 post '/' do
+  puts 'testing'
+  if request.xhr?
+    #puts params
+    error 400, "Missing Data" unless params['xmlfile']
+    error 400, "Missing Data" if params['xmlfile'].empty?
+    
+    tempfile = params['xmlfile'][:tempfile]
+    filename = params['xmlfile'][:filename]
+    
+    client = env['REMOTE_ADDR']
+    
+    collection_id = params[:collection_id] unless params[:collection_id].empty?
+    institution = params[:institution] unless params[:institution].empty?
+    
+    #transform xml into mods
+    @@session[@user].transform tempfile, collection_id, institution
+    "Process complete"
+  else
+    "Ajax request not found.  Check your browser settings"
+  end
+  #redirect '/'
+end
+
+post '/nonajaxpost' do
   error 400, "Missing Data" unless params['xmlfile']
   error 400, "Missing Data" if params['xmlfile'].empty?
     

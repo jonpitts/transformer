@@ -6,6 +6,8 @@
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/ajax.js"></script>
   </head>
   <body>
   
@@ -31,13 +33,13 @@
     <div>
       <h3>Upload</h3>
       <p> Upload an xml file.</p>
-      <form action="/" method="POST" enctype="multipart/form-data">
-        <input type='file' name='xmlfile'><br /><br />
+      <form id='theForm' action="/" method="POST" enctype="multipart/form-data">
+        <input id="fileInput" type='file' name='xmlfile'><br /><br />
         <label type='text'>Name your collection</label>
         <input type='text' name='collection_id'><br /><br />
         <label type='text'>Owning Institution</label>
         <input type='text' name='institution' value='FAU'>
-        <input type='submit' value='transform'>
+        <input id="btnTransform" type='submit' value='transform'>
       </form>
     </div>
     
@@ -87,7 +89,7 @@
       </form>
     </div>
     
-    <div>
+    <div id="collections">
       <h3>Collections</h3>
       <table>
       <tr>
@@ -110,7 +112,7 @@
     </table>
     </div>
     
-    <div>
+    <div id="errors">
       <h3>Submission Errors</h3>
       <table>
       <tr>
