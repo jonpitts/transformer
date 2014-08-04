@@ -8,6 +8,7 @@ require_relative 'validate'
 require_relative 'make_xml'
 require_relative 'mod_tags'
 require_relative 'admin'
+require_relative 'string_num'
 
 include Util::Zipper
 
@@ -84,7 +85,7 @@ class Transformer
   
   
   #associate excel xml tag with mods tag
-  #uses a simple algorithm to check for substring
+  #matches downcase exact and downcase enumerated. ex 'Casper' == 'casper1'
   def translate hash, uniqName
     convertedTags = []
     
@@ -96,7 +97,7 @@ class Transformer
         break if found
         dictionary.each do |definition| #each definition of mods tag
           
-          #check for possible sub string
+          #assign designations of bigger or smaller string
           if (excelTag.length < definition.length)
             smallStr = excelTag
             bigStr = definition
@@ -105,11 +106,17 @@ class Transformer
             bigStr = excelTag
           end
           
-          #if substring exists then store as new hash element
-          if bigStr.downcase.include? smallStr.downcase
-          #if definition.downcase == modTag.downcase
-            convertedTags << Hash[modTag, inner_text]
-            found = true
+          #downcase each string
+          bigStr = bigStr.downcase
+          smallStr = smallStr.downcase
+          
+          #if substring exists then check
+          if bigStr.include? smallStr
+            #check if strings are the same length or if the end is an integer
+            if (bigStr.length == smallStr.length) || (bigStr[smallStr.length,bigStr.length].numeric?)
+              convertedTags << Hash[modTag, inner_text]
+              found = true
+            end
           end
         end
       end #end each modsTags
