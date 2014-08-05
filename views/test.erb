@@ -24,9 +24,17 @@
       </ul>
     </div>
     <h1>Test Page</h1>
-    <ul ng-repeat="(tag,definition) in tags">
-      <li>{{tag}}: {{definition}}</li>
-    </ul>
+    <table>
+      <tr>
+        <th>MODs Tag</th>
+        <th>Definition</th>
+      </tr>
+      <tr ng-repeat="(tag,definition) in tags">
+        <td>{{tag}}</td>
+        <td>{{definition}}</td>
+      </tr>
+    </table>
+
    </div> 
     
   </body>
