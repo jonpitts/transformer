@@ -14,3 +14,13 @@ get '/:collection_id' do |collection_id|
   error 400, "No such file #{collection_id}.zip" unless File.exist?(package)
   send_file package
 end
+
+#json test
+get '/mods/' do
+  content_type 'application/json'
+  @tags = @@session[@user].modsTags.to_json
+end
+
+get '/test/' do
+  erb :test, :layout => false
+end
