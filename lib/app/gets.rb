@@ -1,11 +1,11 @@
 # Index view
 
 get '/' do
-  erb :index
+  erb :index, :layout => :layout
 end
 
 get '/user' do
-  erb :user
+  erb :user, :layout => :layout
 end
 
 get '/:collection_id' do |collection_id|

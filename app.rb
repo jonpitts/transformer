@@ -10,6 +10,7 @@ require 'sinatra'
 require_relative 'lib/transformer'
 require_relative 'lib/model/user'
 require_relative 'lib/model/tag'
+require_relative 'lib/helpers/helpers'
 
 #Transformer service for converting excel generated xml into mods format.
 #Initial author: Jonathan Pitts, 2014
@@ -23,7 +24,7 @@ enable :sessions
 class Login < Sinatra::Base
   
   get "/login" do
-    erb :login
+    erb :login, :layout => false
   end
   
   post('/login') do
@@ -55,25 +56,9 @@ class Login < Sinatra::Base
     
   end
   
-  helpers do
-    def protected!
-      return if authorized?
-      halt 401, "Not authorized\n"
-    end
-    
-    def authorized?
-      if session['user_name'] && User.first(:username => session['user_name']).isAdmin?
-        puts session['user_name']
-        true
-      else
-        false
-      end
-    end
-  end
-  
   get '/admin' do
     protected!
-    erb :admin
+    erb :admin, :layout => :layout
   end
   
 end

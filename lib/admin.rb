@@ -45,4 +45,10 @@ class Transformer
     end
   end
   
+  def setPassword username, password
+    user = User.first(:username => username)
+    user.changePassword password
+    userSave user
+  end
+  
 end

@@ -1,82 +1,67 @@
- <!DOCTYPE html>
-<html>
-  <head>
-    <title>MODs Transformer Service</title>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-  </head>
-  <body>
+<div id="header">
+  <h1>MODs Transformer Service</h1>
+</div>
+<p>This service transforms excel generated xml files into MODs format.</p>
   
-  <div id="content">
-  
-    <div id="nav">
-      <ul>
-          <li><a href="/user">Change user settings</a></li>
-          <li><a href="/logout">Logout</a></li>
-          <li><a href="/admin">Admin</a></li>
-      </ul>
-    </div>
-  
-    <div id="header">
-      <h1>MODs Transformer Service</h1>
-    </div>
-    <p>This service transforms excel generated xml files into MODs format.</p>
-      
-    <div>
-      <h3>Admin Page</h3>
-      <p>Create new user</p>
-      <form action="/newUser" method="POST" enctype="multipart/form-data">
-        <label type='text'>User ID</label>
-        <input type='text' name='name'><br /><br />
-        <label type='text'>Password</label>
-        <input type='password' name='password'><br /><br />
-        <label type='text'>Confirm Password</label>
-        <input type='password' name='confirm'>
-        <input type='submit' value='create'>
-      </form>
-    </div>
-    
-    <div>
-      <h3>Users</h3>
-      <table>
-        <tr>
-          <th>User ID</th>
-          <th>User Name</th>
-          <th>Admin</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <% users = User.all %>
-        <% users.each do |user| %>
-        <% id = user.id %>
-        <% name = user.username %>
-        <% delete = "<form action='/removeUser' method='post' >
-            <input type='hidden' value='#{id}' name='id' >
-            <input type='hidden' value='#{name}' name='name' >
-            <input type='submit' value='remove'>
-            </form>" %>
-        <% admin = user.isAdmin? %>
-        <% adminSet = "<form action='/setAdmin' method='post' >
-            <input type='hidden' value='#{id}' name='id' >
-            <input type='hidden' value='#{name}' name='name' >
-            <input type='submit' value='set admin'>
-            </form>" %>
-            <% if id == 1 %>
-            <% delete = "" %>
-            <% end %>
-        <tr>
-          <td><%= id %></td>
-          <td><%= name %></td>
-          <td><%= admin %></td>
-          <td><%= delete %></td>
-          <td><%= adminSet %></td>
-        </tr>
+<div>
+  <h3>Admin Page</h3>
+  <p>Create new user</p>
+  <form action="/newUser" method="POST" enctype="multipart/form-data">
+    <label type='text'>User ID</label>
+    <input type='text' name='name'><br /><br />
+    <label type='text'>Password</label>
+    <input type='password' name='password'><br /><br />
+    <label type='text'>Confirm Password</label>
+    <input type='password' name='confirm'>
+    <input type='submit' value='create'>
+  </form>
+</div>
+
+<div>
+  <h3>Users</h3>
+  <table>
+    <tr>
+      <th>User ID</th>
+      <th>User Name</th>
+      <th>Admin</th>
+      <th></th>
+      <th></th>
+      <th>Set Password</th>
+    </tr>
+    <% users = User.all %>
+    <% users.each do |user| %>
+    <% id = user.id %>
+    <% name = user.username %>
+    <% delete = "<form action='/removeUser' method='post' >
+        <input type='hidden' value='#{id}' name='id' >
+        <input type='hidden' value='#{name}' name='name' >
+        <input type='submit' value='remove'>
+        </form>" %>
+    <% admin = user.isAdmin? %>
+    <% adminSet = "<form action='/setAdmin' method='post' >
+        <input type='hidden' value='#{id}' name='id' >
+        <input type='hidden' value='#{name}' name='name' >
+        <input type='submit' value='set admin'>
+        </form>" %>
+     <% passwordSet = "<form action='/setPassword' method='POST' enctype='multipart/form-data'>
+        <input type='hidden' value='#{id}' name='id' >
+        <input type='hidden' value='#{name}' name='name' >
+        <input type='password' name='password'>
+        <input type='submit' value='update'>
+        </form>" %>
+        <% if id == 1 %>
+        <% delete = "" %>
+        <% adminSet = "" %>
+        <% passwordSet = "" %>
         <% end %>
-      </table>
-    </div>
-    
-   </div> 
-  </body>
-</html>
+    <tr>
+      <td><%= id %></td>
+      <td><%= name %></td>
+      <td><%= admin %></td>
+      <td><%= delete %></td>
+      <td><%= adminSet %></td>
+      <td><%= passwordSet %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

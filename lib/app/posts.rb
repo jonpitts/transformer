@@ -1,4 +1,5 @@
 #GUI - Post something to service#
+require_relative '../helpers/helpers'
 
 #ajax post
 post '/' do
@@ -69,6 +70,7 @@ post '/reset' do
 end
 
 post '/newUser' do
+  protected!
   error 400, "Missing user name" unless params[:name]
   error 400, "Missing password" unless params[:password]
   error 400, "Confirm password" unless params[:confirm]
@@ -86,6 +88,7 @@ post '/newUser' do
 end
 
 post '/setAdmin' do
+  protected!
   error 400, "Missing user id" unless params[:id]
   error 400, "Missing user name" unless params[:name]
   
@@ -96,6 +99,7 @@ post '/setAdmin' do
 end
 
 post '/removeUser' do
+  protected!
   error 400, "Missing user id" unless params[:id]
   error 400, "Missing user name" unless params[:name]
   
@@ -105,17 +109,26 @@ post '/removeUser' do
   redirect '/admin'
 end
 
-post '/changePassword' do
+post '/setPassword' do
+  protected!
   error 400, "Missing user name" unless params[:name]
+  error 400, "Missing password" unless params[:password]
+  error 400, "Cannot change admin password this way" if params[:id] == '1'
+  
+  @@session[@user].setPassword params[:name], params[:password]
+  redirect '/admin'
+end
+
+post '/changePassword' do
   error 400, "Missing password" unless params[:password]
   error 400, "Missing new password" unless params[:newPassword]
   error 400, "Missing confirm password" unless params[:confirm]
-  
   error 400, "Passwords do not match" unless params[:newPassword] == params[:confirm]
   
-  if @@session[@user].changePassword params[:name], params[:password], params[:newPassword]
+  if @@session[@user].changePassword @user, params[:password], params[:newPassword]
     redirect '/login'
   else
     error 400, "Incorrect password"
   end
+  
 end
