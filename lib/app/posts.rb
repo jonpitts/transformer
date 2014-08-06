@@ -132,3 +132,10 @@ post '/changePassword' do
   end
   
 end
+
+#non-redirect version of createHash
+post '/createHashs' do
+  #allow user to create their own MODs mapping
+  @@session[@user].createHash params
+  @@session[@user].modsTags.each
+end

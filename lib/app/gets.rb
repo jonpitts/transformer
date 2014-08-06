@@ -18,7 +18,12 @@ end
 #json test
 get '/mods/' do
   content_type 'application/json'
-  @tags = @@session[@user].modsTags.to_json
+  tags = @@session[@user].modsTags.to_json
+end
+
+get '/notes/' do
+  content_type 'application/json'
+  notes = @@session[@user].notes.to_json
 end
 
 get '/test/' do

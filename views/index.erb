@@ -22,8 +22,8 @@
 </div>
 
 <div>
-  <h3>Current XML to MODs Mapping</h3>
-  <p>Change textfields to match headers in excel file.  Use comma seperated lists
+  <h3>Excel Generated XML tags to MODs Mapping</h3>
+  <p>Change textfields to match headers in xml file.  Use comma seperated lists
   if you need to match multiple headers to the same mods tags.</p>
   <form action="/createHash" method="post" enctype="multipart/form-data">
   <table>
@@ -41,8 +41,8 @@
   </table>
   <table>
     <tr>
-      <th>MODs Tags and Attributes</th>
-      <th>Excel Column Header</th>
+      <th>Excel XML Tags</th>
+      <th>Available MODs Tags and Attributes</th>
     </tr>
     <% @@session[@user].modsTags.each do |tag, array| %>
       <% next if tag == 'filename' %>
@@ -53,8 +53,8 @@
          <% if note.length > 0 %>
            <% tag = note %>
          <% end %>
-         <td><%= tag %></td>
          <td><%= tagInput %></td>
+         <td><%= tag %></td>
        </tr>
     <% end %>
   </table>

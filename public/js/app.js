@@ -1,7 +1,8 @@
 (function(){
-  var app = angular.module('transformer', []);
-
+  var app = angular.module('transformer', ['ngSanitize']); //ngSanitize directive needed for inserting html
+  
   app.controller('MainController',['$scope', '$http', function($scope,$http){
+    $scope.params = {};
     $http.get("/mods/")
       .then(function(res){ 
         var data = res.data; //response data is in json format
@@ -11,6 +12,16 @@
         }
         $scope.tags = data; //scope data into tags
       });
+      
+    $http.get("/notes/")
+      .then(function(res){ 
+        $scope.notes = res.data; //response data is in json format
+      });
+    
+    $scope.submit = function() {
+      
+      alert($scope);
+    };
     
   }]);
   
