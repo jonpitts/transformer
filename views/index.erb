@@ -3,14 +3,14 @@
 </div>
 
 <p>Welcome <%= @user %>!</p>
-<p>This service transforms excel generated xml files into MODs format.</p>
+<p>This service transforms excel files into XML MODs format.</p>
 <form action="/" method="get">
     <input type='submit' value='refresh page'>
 </form>
   
 <div>
   <h3>Upload</h3>
-  <p> Upload an xml file.</p>
+  <p> Upload an excel file.</p>
   <form id='theForm' action="/" method="POST" enctype="multipart/form-data">
     <input id="fileInput" type='file' name='xmlfile'><br /><br />
     <label type='text'>Name your collection</label>

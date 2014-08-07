@@ -10,7 +10,9 @@ require_relative 'mod_tags'
 require_relative 'admin'
 require_relative 'string_num'
 
+
 include Util::Zipper
+include Util::ExcelXML
 
 class Transformer
 #  include Singleton
@@ -32,33 +34,42 @@ class Transformer
     errorStore(uniqName,"Owning Institution left blank.") if institution.nil?
     
     tmpdir = Dir.mktmpdir ("#{data_path}/")
-    xmldoc = Nokogiri::XML::Document.parse(doc)
     
-    xmldoc.xpath("//Row").each do |node|
-      #get tags from file
-      hash = getTags node
-      #translate these tags into mods equivalent
-      hashArray = translate hash, uniqName
+    #convert excel into xml
+    exceldoc = convertExcel(doc, uniqName, tmpdir)
+    
+    if exceldoc
       
-      break if @errors.key?(uniqName)
+      xmldoc = Nokogiri::XML::Document.parse(exceldoc) unless @errors.key?(uniqName)
+      exceldoc.close
       
-      #make xml - transformation
-      xml = makeXML hashArray, institution
-      
-      #validate xml against mods
-      if validate xml, uniqName
-        puts "passes mods validation"
-      else
-        puts "failed mods validation"
-        break
+      xmldoc.xpath("//Row").each do |node|
+        #get tags from file
+        hash = getTags node
+        #translate these tags into mods equivalent
+        hashArray = translate hash, uniqName
+        
+        break if @errors.key?(uniqName)
+        
+        #make xml - transformation
+        xml = makeXML hashArray, institution
+        
+        #validate xml against mods
+        if validate xml, uniqName
+          puts "passes mods validation"
+        else
+          puts "failed mods validation"
+          break
+        end
+        fname = hashArray[0]
+        fname = fname.values[0]
+        #save the xml generated under filename.xml
+        saveXML xml, fname, tmpdir unless fname.nil?
       end
-      fname = hashArray[0]
-      fname = fname.values[0]
-      #save the xml generated under filename.xml
-      saveXML xml, fname, tmpdir unless fname.nil?
+      #check if any rows were found
+      errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
     end
     
-    errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
     
     #create package
     package tmpdir, uniqName, data_path unless @errors.key?(uniqName)
@@ -125,7 +136,25 @@ class Transformer
     convertedTags
   end
   
+  #call excel to XML converter
+  def convertExcel exceldoc, fname, tmpdir
+    uniqName = fname
+    begin
+      if File.extname(fname) == ""
+        fname = "#{fname}.xml"
+      else
+        fname = File.basename(fname, File.extname(fname)) + ".xml"
+      end
+      fname = File.join(tmpdir, fname)
+      excelXML exceldoc.path, fname
+      File.open(fname)
+    rescue Exception => e
+      errorStore(uniqName,e.message)
+      false
+    end
+  end
   
+  #saveXML to tmpdir
   def saveXML xml, fname, tmpdir
     begin
       if File.extname(fname) == ""
@@ -133,9 +162,7 @@ class Transformer
       else
         fname = File.basename(fname, File.extname(fname)) + ".xml"
       end
-      puts fname
       fname = File.join(tmpdir, fname)
-      puts fname
       file = File.new(fname, 'w')
       file.write(xml)
     ensure

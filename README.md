@@ -1,6 +1,6 @@
 Transformer Service
 ===================
-An experimental sinatra based web-service that transforms excel generated xml files into mods format.
+An experimental sinatra based web-service that transforms excel files into mods format.
 
 Excel has been a popular tool for cataloging library meta-data.  
 It is much better to store this type of data in xml following a schema.
@@ -17,18 +17,20 @@ Quick Setup:
 
 General Operation:
 ------------------
-  
+  * Transformer has been overhauled.
+    * The service now takes excel files.
+    * Conversion is handled by a java application included with this service
   * Transformer uses sqlite and comes with a simple setup script.
   * The default login is admin:admin.
   * The admin user may create logins and assign admin designations.
   * The service allows multiple users to be logged in with each users own working space.
-  * The service assumes xml files passed to it are created from excel exports.
   * All temp space is cleared upon service exit.
   
 Transformation:
 ---------------
-  * Transformer comes with sample xml files.
-  * Each <row> element will generate a new xml file in mods format.
+  * An excel file is sent to the service
+  * Excel is converted into an xml format
+  * Each <row> element of this converted file will generate a new xml file in mods format.
   * Each xml file will be validated against the mods schema.
   * A collection will be created and stored in a zip file and posted to the GUI.
   * A list of errors are generated when there are problems and populated to the GUI.
@@ -51,10 +53,11 @@ Ruby Requirements:
 Other Requirements:
 -------------------
   * sqlite3
+  * a jvm
   
 Reasons for this project
 ------------------------
-  * Provide a web-service for converting xml into mods.
+  * Provide a web-service for converting excel into xml following mods format.
   * Simplify process of converting xml files into mods.
     * Typically transformations require stylesheets and can be difficult to maintain.
     * Transformer now uses xml node manipulation for creating the mods xml.

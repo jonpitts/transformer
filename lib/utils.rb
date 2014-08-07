@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'fileutils'
 require 'zip'
-
+#require 'debugger'
 #Utilities module
 
 module Util
@@ -21,4 +21,19 @@ module Util
     end
     
   end
+  
+  module ExcelXML
+    
+    # call excelXML.jar to convert excel into xml
+    #Two parameters: xlsxfile and outputfile
+    def excelXML xlsxfile, outputfile
+      #debugger
+      Dir.chdir(Dir.pwd + "/bin/") do
+        system("java -jar excelXML.jar #{xlsxfile} #{outputfile}")
+      end
+      raise "Could not convert excel document" unless File.exists?(outputfile)
+    end
+    
+  end
+  
 end

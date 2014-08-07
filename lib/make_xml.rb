@@ -3,7 +3,8 @@ class Transformer
   #generate xml based on converted hash
   def makeXML arrayHash, institution
       
-      template_file = File.open("lib/templates/layout.erb", 'r').read
+      template_file = File.open("lib/templates/layout.erb", 'rb').read
+
       xmlStr = ERB.new(template_file).result(binding)
       doc = Nokogiri.XML(xmlStr,&:noblanks)
       
