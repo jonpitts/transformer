@@ -1,115 +1,159 @@
-<div id="header">
-  <h1>MODs Transformer Service</h1>
+<div class="row">
+  <h3>Welcome <%= @user %>! <small>This service transforms excel files into XML MODs format.</small></h3>
 </div>
-
-<p>Welcome <%= @user %>!</p>
-<p>This service transforms excel files into XML MODs format.</p>
-<form action="/" method="get">
-    <input type='submit' value='refresh page'>
-</form>
   
-<div>
-  <h3>Upload</h3>
-  <p> Upload an excel file.</p>
-  <form id='theForm' action="/" method="POST" enctype="multipart/form-data">
-    <input id="fileInput" type='file' name='xmlfile'><br /><br />
-    <label type='text'>Name your collection</label>
-    <input type='text' name='collection_id'><br /><br />
-    <label type='text'>Owning Institution</label>
-    <input type='text' name='institution' value='FAU'>
-    <input id="btnTransform" type='submit' value='transform'>
-  </form>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Upload</h3>
+    </div>
+    <div class="panel-body">
+      <form id='theForm' action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group">
+          <div class="col-md-4">
+            <label for='xmlfile' type='text'>Upload a file</label>
+            <span>
+              <input id="fileInput" type='file' name='xmlfile' class="btn btn-default btn-file">
+            </span>
+          </div>
+          <div class="col-md-4">
+            <label for='collection_id' type='text'>Name your collection</label>
+            <input type='text' name='collection_id' class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for='institution' type='text'>Owning Institution</label>
+            <input type='text' name='institution' value='' class="form-control">
+          </div>
+        </div>
+        <div>
+          <button id="btnTransform" type='submit' value='transform' class="btn btn-default">transform</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-<div>
-  <h3>Excel Generated XML tags to MODs Mapping</h3>
-  <p>Change textfields to match headers in xml file.  Use comma seperated lists
-  if you need to match multiple headers to the same mods tags.</p>
-  <form action="/createHash" method="post" enctype="multipart/form-data">
-  <table>
-    <tr>
-      <th>MODS filename</th>
-      <th>Excel Column Header</th>
-    </tr>
-    <tr>
-      <td>filename</td>
-      <% array = @@session[@user].modsTags['filename'] %>
-      <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
-      <% tagInput = "<input type='text' value='#{str}' name='filename'>" %>
-      <td><%= tagInput %></td>
-    </tr>
-  </table>
-  <table>
-    <tr>
-      <th>Excel XML Tags</th>
-      <th>Available MODs Tags and Attributes</th>
-    </tr>
-    <% @@session[@user].modsTags.each do |tag, array| %>
-      <% next if tag == 'filename' %>
-       <tr>
-         <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
-         <% tagInput = "<input type='text' value='#{str}' name='#{tag}'>" %>
-         <% note = @@session[@user].notes[tag] || '' %>
-         <% if note.length > 0 %>
-           <% tag = note %>
-         <% end %>
-         <td><%= tagInput %></td>
-         <td><%= tag %></td>
-       </tr>
-    <% end %>
-  </table>
-  <input type='submit' value='submit'>
-  </form>
-  
-  <h4>Reset Mapping</h4>
-  <form action="/reset" method="post">
-    <input type='submit' value='reset tags'/>
-  </form>
+<div class="row">
+  <div id="collections">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Collections</h3>
+      </div>
+      
+      <div class="panel-body">
+        <table class="table table-hover">
+          <tr>
+            <th>Collection</th>
+            <th colspan="2">Package</th>
+          </tr>
+          <% @array = @@session[@user].listPackages %>
+          <% @array.each do |x| %>
+            <% collection_id = File.basename(x, ".zip") %>
+            <% packageLink = "<a href='/#{collection_id}'>Package</a>" %>
+            <% deletePackage = "<form action='/remove/#{collection_id}' method='post' >
+                <input type='submit' value='remove'>
+              </form>" %>
+            <tr>
+              <td><%= File.basename(x) %></td>
+              <td><%= packageLink %></td>
+              <td><%= deletePackage %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div id="errors">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Submission Errors</h3>
+      </div>
+      
+      <div class="panel-body">
+        <table class="table table-hover">
+        <tr>
+          <th>Errors</th>
+          <th colspan="2">Package</th>
+        </tr>
+        <% @hash = @@session[@user].errors %>
+        <% @hash.each do |key, array| %>
+          <% collection_id = key %>
+          <% deleteHash = "<form action='/delete/#{collection_id}' method='post' >
+              <input type='submit' value='delete'>
+            </form>" %>
+          <% array.each do |error| %>
+          <tr>
+            <td><%= collection_id %></td>
+            <td><%= error %></td>
+            <td><%= deleteHash %>
+          </tr>
+          <% end %>
+        <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="collections">
-  <h3>Collections</h3>
-  <table>
-  <tr>
-    <th>Collection</th>
-    <th colspan="2">Package</th>
-  </tr>
-  <% @array = @@session[@user].listPackages %>
-  <% @array.each do |x| %>
-    <% collection_id = File.basename(x, ".zip") %>
-    <% packageLink = "<a href='/#{collection_id}'>Package</a>" %>
-    <% deletePackage = "<form action='/remove/#{collection_id}' method='post' >
-        <input type='submit' value='remove'>
-      </form>" %>
-    <tr>
-      <td><%= File.basename(x) %></td>
-      <td><%= packageLink %></td>
-      <td><%= deletePackage %></td>
-    </tr>
-  <% end %>
-</table>
-</div>
-
-<div id="errors">
-  <h3>Submission Errors</h3>
-  <table>
-  <tr>
-    <th>Errors</th>
-    <th colspan="2">Package</th>
-  </tr>
-  <% @hash = @@session[@user].errors %>
-  <% @hash.each do |key, array| %>
-    <% collection_id = key %>
-    <% deleteHash = "<form action='/delete/#{collection_id}' method='post' >
-        <input type='submit' value='delete'>
-      </form>" %>
-    <% array.each do |error| %>
-    <tr>
-      <td><%= collection_id %></td>
-      <td><%= error %></td>
-      <td><%= deleteHash %>
-    </tr>
-    <% end %>
-  <% end %>
-  </table>
+<div class="row">
+  <div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">XML tags to MODs Mapping</h3>
+      </div>
+      
+      <div class="panel-body">
+        <p>Change textfields to match headers in xml file.  Use comma seperated lists
+        if you need to match multiple headers to the same mods tag.</p>
+        <form action="/createHash" method="post" enctype="multipart/form-data">
+        <table class="table table-hover">
+          <tr>
+            <th>MODS filename</th>
+            <th>Excel Column Header</th>
+          </tr>
+          <tr>
+            <% array = @@session[@user].modsTags['filename'] %>
+            <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+            <% tagInput = "<input type='text' value='#{str}' name='filename' class='form-control'>" %>
+            <td><%= tagInput %></td>
+            <td>filename</td>
+          </tr>
+        </table>
+        <table class="table table-hover">
+          <tr>
+            <th>Excel XML Tags</th>
+            <th>Available MODs Tags and Attributes</th>
+          </tr>
+          <% @@session[@user].modsTags.each do |tag, array| %>
+            <% next if tag == 'filename' %>
+             <tr>
+               <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+               <% tagInput = "<input type='text' value='#{str}' name='#{tag}' class='form-control'>" %>
+               <% note = @@session[@user].notes[tag] || '' %>
+               <% if note.length > 0 %>
+                 <% tag = note %>
+               <% end %>
+               <td><%= tagInput %></td>
+               <td><%= tag %></td>
+             </tr>
+          <% end %>
+        </table>
+        <button type='submit' value='submit' class='btn btn-default'>submit</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Reset Mapping</h4>
+      </div>
+      <div class="panel-body">
+        <form action="/reset" method="post">
+          <button type='submit' value='reset tags' class='btn btn-default'>reset tags</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

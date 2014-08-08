@@ -6,7 +6,11 @@
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/ajax.js"></script>
     <script src="/js/angular.js"></script>
     <script src="/js/angular-sanitize.js"></script>
     <script src="/js/app.js"></script>
@@ -24,7 +28,7 @@
           <%= "<li><a href='/admin'>Admin</a></li>" if authorized? %>
       </ul>
     </div>
-    <h1>Test Page</h1>
+    <h1>Test Page <small>Using angular to load data</small></h1>
     <form ng-submit="submit()" enctype="multipart/form-data">
     <table>
     <tr>

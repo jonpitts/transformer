@@ -1,66 +1,92 @@
-<div id="header">
-  <h1>MODs Transformer Service</h1>
+<div class="row">
+  <h3>Welcome<%= @user %>! <small>This is the admin page.</small></h3>
 </div>
   
-<div>
-  <h3>Admin Page</h3>
-  <p>Create new user</p>
-  <form action="/newUser" method="POST" enctype="multipart/form-data">
-    <label type='text'>User ID</label>
-    <input type='text' name='name'><br /><br />
-    <label type='text'>Password</label>
-    <input type='password' name='password'><br /><br />
-    <label type='text'>Confirm Password</label>
-    <input type='password' name='confirm'>
-    <input type='submit' value='create'>
-  </form>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create new user</h3>
+    </div>
+    
+    <div class="panel-body">
+      <form action="/newUser" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-4">
+            <label for='name' type='text'>User ID</label>
+            <input type='text' name='name' class='form-control'>
+          </div>
+          <div class="col-md-4">
+            <label for='password' type='text'>Password</label>
+            <input type='password' name='password' class='form-control'>
+          </div>
+          <div class="col-md-4">
+            <label for='confirm' type='text'>Confirm Password</label>
+            <input type='password' name='confirm' class='form-control'>
+          </div>
+        </div>
+        <div class="row">
+          <br>
+          <div class="col-md-4">
+            <button type='submit' value='create' class='btn btn-default'>create</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-<div>
-  <h3>Users</h3>
-  <table>
-    <tr>
-      <th>User ID</th>
-      <th>User Name</th>
-      <th>Admin</th>
-      <th></th>
-      <th></th>
-      <th>Set Password</th>
-    </tr>
-    <% users = User.all %>
-    <% users.each do |user| %>
-    <% id = user.id %>
-    <% name = user.username %>
-    <% delete = "<form action='/removeUser' method='post' >
-        <input type='hidden' value='#{id}' name='id' >
-        <input type='hidden' value='#{name}' name='name' >
-        <input type='submit' value='remove'>
-        </form>" %>
-    <% admin = user.isAdmin? %>
-    <% adminSet = "<form action='/setAdmin' method='post' >
-        <input type='hidden' value='#{id}' name='id' >
-        <input type='hidden' value='#{name}' name='name' >
-        <input type='submit' value='set admin'>
-        </form>" %>
-     <% passwordSet = "<form action='/setPassword' method='POST' enctype='multipart/form-data'>
-        <input type='hidden' value='#{id}' name='id' >
-        <input type='hidden' value='#{name}' name='name' >
-        <input type='password' name='password'>
-        <input type='submit' value='update'>
-        </form>" %>
-        <% if id == 1 %>
-        <% delete = "" %>
-        <% adminSet = "" %>
-        <% passwordSet = "" %>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Manage Users</h3>
+    </div>
+    
+    <div class="panel-body">
+      <table class="table table-hover">
+        <tr>
+          <th>User ID</th>
+          <th>User Name</th>
+          <th>Admin</th>
+          <th></th>
+          <th>Remove User</th>
+          <th>Set Password</th>
+        </tr>
+        <% users = User.all %>
+        <% users.each do |user| %>
+        <% id = user.id %>
+        <% name = user.username %>
+        <% delete = "<form action='/removeUser' method='post' >
+            <input type='hidden' value='#{id}' name='id' >
+            <input type='hidden' value='#{name}' name='name' >
+            <button type='submit' value='remove'>remove</button>
+            </form>" %>
+        <% admin = user.isAdmin? %>
+        <% adminSet = "<form action='/setAdmin' method='post' >
+            <input type='hidden' value='#{id}' name='id' >
+            <input type='hidden' value='#{name}' name='name' >
+            <button type='submit' value='set admin'>set admin</button>
+            </form>" %>
+         <% passwordSet = "<form action='/setPassword' method='POST' enctype='multipart/form-data'>
+            <input type='hidden' value='#{id}' name='id' >
+            <input type='hidden' value='#{name}' name='name' >
+            <input type='password' name='password' value=''>
+            <button type='submit' value='update'>update</button>
+            </form>" %>
+            <% if id == 1 %>
+            <% delete = "" %>
+            <% adminSet = "" %>
+            <% passwordSet = "" %>
+            <% end %>
+        <tr>
+          <td><%= id %></td>
+          <td><%= name %></td>
+          <td><%= admin %></td>
+          <td><%= adminSet %></td>
+          <td><%= delete %></td>
+          <td><%= passwordSet %></td>
+        </tr>
         <% end %>
-    <tr>
-      <td><%= id %></td>
-      <td><%= name %></td>
-      <td><%= admin %></td>
-      <td><%= delete %></td>
-      <td><%= adminSet %></td>
-      <td><%= passwordSet %></td>
-    </tr>
-    <% end %>
-  </table>
+      </table>
+    </div>
+  </div>
 </div>

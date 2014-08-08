@@ -10,7 +10,14 @@ module Sinatra
     
     def authorized?
       if session['user_name'] && User.first(:username => session['user_name']).isAdmin?
-        puts session['user_name']
+        true
+      else
+        false
+      end
+    end
+    
+    def signed_in?
+      if session['user_name']
         true
       else
         false

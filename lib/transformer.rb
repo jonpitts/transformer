@@ -17,13 +17,14 @@ include Util::ExcelXML
 class Transformer
 #  include Singleton
   
-  attr_accessor :errors, :data_path, :modsTags, :user_name
+  attr_accessor :errors, :data_path, :modsTags, :user_name, :layout
   
   def initialize data_path, user_name
     @user_name = user_name
     @data_path = data_path
     setTagsDefault
     @errors = {}
+    @layout = File.open("lib/templates/layout.erb", 'rb').read
   end
   
   #transform excel xml into mods validated xml files
@@ -55,12 +56,12 @@ class Transformer
         xml = makeXML hashArray, institution
         
         #validate xml against mods
-        if validate xml, uniqName
-          puts "passes mods validation"
-        else
-          puts "failed mods validation"
-          break
-        end
+        #if validate xml, uniqName
+        #  puts "passes mods validation"
+        #else
+        #  puts "failed mods validation"
+        #  break
+        #end
         fname = hashArray[0]
         fname = fname.values[0]
         #save the xml generated under filename.xml

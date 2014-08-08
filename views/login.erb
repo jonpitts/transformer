@@ -1,32 +1,30 @@
- <!DOCTYPE html>
-<html>
-  <head>
-    <title>MODs Transformer Service</title>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-  </head>
-  <body>
-  
-  <div id="content">
-    <div id="header">
-      <h1>MODs Transformer Service</h1>
-    </div>
-    <p>This service transforms excel files into XML MODs format.</p>
-      
-    <div>
-      <h3>Login</h3>
-      <p>Login to use the Transformer Service</p>
-      <form action="/login" method="POST" enctype="multipart/form-data">
-        <label type='text'>User ID</label>
-        <input type='text' name='name'><br /><br />
-        <label type='text'>Password</label>
-        <input type='password' name='password'>
-        <input type='submit' value='login'>
-      </form>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">Login to use the Transformer Service</h1>
     </div>
     
-   </div> 
-  </body>
-</html>
+    <div class="panel-body">
+      <form action="/login" method="POST" enctype="multipart/form-data" class="form">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-4">
+              <label for="name" type='text'>User ID</label>
+              <input type='text' name='name' class="form-control"><br /><br />
+            </div>
+            <div class="col-md-4">
+              <label for="password" type='text'>Password</label>
+              <input type='password' name='password' class="form-control">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <button type='submit' value='login' class="btn btn-default">login</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

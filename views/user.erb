@@ -1,18 +1,46 @@
-<div id="header">
-  <h1>MODs Transformer Service</h1>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Hello <%= @user %>.</h3>
+    </div>
+  </div>
 </div>
-<p>Hello <%= @user %>.</p>
-  
-<div>
-  <h3>User Page</h3>
-  <p>Change Password</p>
+
+<div class="row">
   <form action="/changePassword" method="POST" enctype="multipart/form-data">
-    <label type='text'>Current Password</label>
-    <input type='password' name='password'><br /><br />
-    <label type='text'>New Password</label>
-    <input type='password' name='newPassword'><br /><br />
-    <label type='text'>Confirm Password</label>
-    <input type='password' name='confirm'>
-    <input type='submit' value='update'>
+    <div class="panel panel-default">
+    
+      <div class="panel-heading">
+        <h3 class="panel-title">User Page</h3>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h4>Change Password</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label for='password' type='text'>Current Password</label>
+            <input type='password' name='password' class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for='newPassword' type='text'>New Password</label>
+            <input type='password' name='newPassword' class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for='confirm' type='text'>Confirm Password</label>
+            <input type='password' name='confirm' class="form-control">
+          </div>
+        </div>
+        <div class="row">
+        <br>
+          <div class="col-md-4">
+            <button type='submit' value='update' class="btn btn-default">update</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 </div>

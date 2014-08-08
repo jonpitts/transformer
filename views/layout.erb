@@ -6,24 +6,46 @@
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic,bolditalic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
     <script src="/js/ajax.js"></script>
   </head>
   <body>
   
-  <div id="content">
-  
-    <div id="nav">
-      <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/user">Change user settings</a></li>
-          <li><a href="/logout">Logout</a></li>
-          <li><a href="/test/">Test Page</a></li>
-          <%= "<li><a href='/admin'>Admin</a></li>" if authorized? %>
-      </ul>
-    </div>
-     <%= yield %>
-   </div> 
+    <div class="container-fluid">
+      <div class="col-md-12">
+      
+        <div id="header" class="page-header">
+          <h1>MODs Transformer Service</h1>
+        </div>
+        
+        <div class="row">
+          <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+
+              <ul class="nav navbar-nav">
+                <% if signed_in? %>
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/user">Change user settings</a></li>
+                  <li><a href="/logout">Logout</a></li>
+                  <li><a href="/test/">Test Page</a></li>
+                  <%= "<li><a href='/admin'>Admin</a></li>" if authorized? %>
+                <% else %>
+                  <li><a>Home</a></li>
+                  <li><a>Change user settings</a></li>
+                  <li><a>Logout</a></li>
+                  <li><a>Test Page</a></li>
+                <% end %>
+              </ul>
+
+            </div>
+          </nav>
+        </div>
+        <%= yield %>
+      </div>
+    </div> 
     
   </body>
 </html>

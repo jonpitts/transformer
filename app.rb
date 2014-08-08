@@ -25,7 +25,7 @@ enable :sessions
 class Login < Sinatra::Base
   
   get "/login" do
-    erb :login, :layout => false
+    erb :login, :layout => :layout
   end
   
   post('/login') do
