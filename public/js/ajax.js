@@ -12,19 +12,19 @@ $(document).ready(function() {
     
     //remove error message
     if(document.getElementById("error")) {
-      var parent = document.getElementById("theForm")
+      var parent = document.getElementById("submitPanel")
       var child = document.getElementById("error");
       parent.removeChild(child);
     }
     
     //create sent message if it does not exist
     if(!document.getElementById("submitted")) {
-      var label = document.createElement("span");
+      var label = document.createElement("div");
       var t = document.createTextNode("Submitted");
       label.id = "submitted";
-      label.class = "alert alert-success";
+      label.className = "alert alert-success";
       label.appendChild(t);
-      document.getElementById("theForm").appendChild(label);
+      document.getElementById("submitPanel").appendChild(label);
     }
     
     //ajax object to send
@@ -49,17 +49,17 @@ $(document).ready(function() {
         
         //remove submit message
         if(document.getElementById("submitted")) {
-          var parent = document.getElementById("theForm")
+          var parent = document.getElementById("submitPanel")
           var child = document.getElementById("submitted");
           parent.removeChild(child);
         }
         //create error message
-        var label = document.createElement("span");
+        var label = document.createElement("div");
         var t = document.createTextNode("Submission error");
         label.id = "error";
-        label.class = "alert alert-warning";
+        label.className = "alert alert-warning";
         label.appendChild(t);
-        document.getElementById("theForm").appendChild(label);
+        document.getElementById("submitPanel").appendChild(label);
       }
     });
 

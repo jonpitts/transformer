@@ -55,16 +55,18 @@ class Transformer
         #make xml - transformation
         xml = makeXML hashArray, institution
         
-        #validate xml against mods
-        #if validate xml, uniqName
-        #  puts "passes mods validation"
-        #else
-        #  puts "failed mods validation"
-        #  break
-        #end
+        validate xml against mods
+        if validate xml, uniqName
+          puts "passes mods validation"
+        else
+          puts "failed mods validation"
+          break
+        end
+        
+        #retrieve filename for mods xml file
         fname = hashArray[0]
         fname = fname.values[0]
-        #save the xml generated under filename.xml
+        #save
         saveXML xml, fname, tmpdir unless fname.nil?
       end
       #check if any rows were found
