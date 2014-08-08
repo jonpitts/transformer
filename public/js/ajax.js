@@ -22,6 +22,7 @@ $(document).ready(function() {
       var label = document.createElement("span");
       var t = document.createTextNode("Submitted");
       label.id = "submitted";
+      label.class = "alert alert-success";
       label.appendChild(t);
       document.getElementById("theForm").appendChild(label);
     }
@@ -56,6 +57,7 @@ $(document).ready(function() {
         var label = document.createElement("span");
         var t = document.createTextNode("Submission error");
         label.id = "error";
+        label.class = "alert alert-warning";
         label.appendChild(t);
         document.getElementById("theForm").appendChild(label);
       }

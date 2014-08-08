@@ -1,8 +1,10 @@
+/*
 h1, h2, h3 {
   margin: 0;
   padding: 0;
   color: #0084A9;
 }
+
 
 body {
   width: 80%;
@@ -10,6 +12,8 @@ body {
   background-color: white;
   font-family: "Droid Sans", sans-serif, Verdana;
 }
+
+
 
 #content {
   background-color: #E4E9E4;
@@ -79,7 +83,7 @@ tr:hover {
   color: white;
   background-color: #65A5D1;
 }
-
+*/
 #submitted {
   color: blue;
 }
@@ -87,4 +91,9 @@ tr:hover {
 #error {
   color: red;
   font-weight: bold;
+}
+
+body {
+  margin-left: 2%;
+  margin-right: 2%;
 }
