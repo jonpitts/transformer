@@ -1,4 +1,42 @@
 $(document).ready(function() {
+
+  $("#loginForm").submit(function(e){
+  
+    var formObj = $(this);
+    var formData = new FormData(this); //html5 formdata
+    var formURL = formObj.attr("action");
+    
+    $.ajax(
+    {
+      url: formURL,
+      type: "POST",
+      data: formData,
+      mimeType: "multipart/form-data",
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(responseTxt, textStatus, xhr)
+      {
+        alert(responseTxt);
+        window.location='/';
+      },
+      error: function(jqXHR, textStatus, errorThrown)
+      {
+        //create error message
+        if(!document.getElementById("error")) {
+          var label = document.createElement("div");
+          var t = document.createTextNode("login error");
+          label.id = "error";
+          label.className = "alert alert-warning";
+          label.appendChild(t);
+          document.getElementById("loginPanel").appendChild(label);
+        }
+      }
+    });
+    
+    e.preventDefault(); //prevent default action
+    e.unbind();
+  });
   
   $("#theForm").submit(function(e){
 

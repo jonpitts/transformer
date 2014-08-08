@@ -29,17 +29,38 @@ class Login < Sinatra::Base
   end
   
   post('/login') do
+    
     name = params[:name]
     password = params[:password]
     user = User.first(:username => name)
-    error 403, "Failed login: invalid user" unless user
+    
+    if request.xhr?
+      unless user
+        status 403
+        body "Failed login: invalid user"
+        halt status, body
+      end
+    else
+      error 403, "Failed login: invalid user" unless user
+    end 
+    
     if user.authenticate password
       session['user_name'] = user.username
       session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
       userTags = user.tags
       @transformer = Transformer.new session['user_path'], session['user_name']
       @@session.store(session['user_name'], @transformer)
-      redirect '/'
+      
+      if request.xhr?
+        status 200
+        body "Success"
+      else
+        redirect '/'
+      end
+    elsif request.xhr?
+      status 403
+      body "Failed login: please check your username and password and try again."
+      halt status, body
     else
       session['user_name'] = nil
       error 403, "Failed login: please check your username and password and try again."
