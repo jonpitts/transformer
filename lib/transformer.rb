@@ -55,7 +55,7 @@ class Transformer
         #make xml - transformation
         xml = makeXML hashArray, institution
         
-        validate xml against mods
+        #validate xml against mods
         if validate xml, uniqName
           puts "passes mods validation"
         else
