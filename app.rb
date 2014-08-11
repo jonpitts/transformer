@@ -19,7 +19,7 @@ require_relative 'lib/helpers/helpers'
 enable :sessions
 @@transformer
 @@tmpdir
-@@schema = 'mods-3-4.xsd'
+@@schema = 'mods-3-5.xsd'
 @@session = {}
 
 class Login < Sinatra::Base
