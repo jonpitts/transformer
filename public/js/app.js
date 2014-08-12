@@ -23,8 +23,8 @@
     $scope.submit = function(tags) {
       //send data as json
       $http.post("/createHash", angular.toJson(tags)).
-        success(function() {
-          alert("Hash updated");
+        success(function(res) {
+          alert(res);
         }).
         error(function() {
           alert("Error!");

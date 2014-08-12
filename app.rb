@@ -53,7 +53,7 @@ class Login < Sinatra::Base
       
       if request.xhr?
         status 200
-        body "Success"
+        body "Login successful"
       else
         redirect '/'
       end

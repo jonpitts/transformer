@@ -64,6 +64,7 @@ post '/createHash' do
     params = JSON.parse(request.body.read)
     @@session[@user].createHash params
     @@session[@user].modsTags.each
+    "MODS mapping updated."
   else
     @@session[@user].createHash params
     @@session[@user].modsTags.each do |key, value|
