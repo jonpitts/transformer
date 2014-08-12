@@ -14,13 +14,13 @@ class Transformer
         
         xsd.validate(doc).each do |error|
           puts error.message
-          errorStore(uniqName,error)
+          errorStore(uniqName,"VALIDATION ERROR :: #{error}")
         end
       end
       
       errors.length == 0 ? (return true) : (return false)
     rescue Exception => e
-      errorStore(uniqName,e)
+      errorStore(uniqName,"EXCEPTION ERROR :: #{e}")
       false
     end
   end

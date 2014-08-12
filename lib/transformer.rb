@@ -42,15 +42,17 @@ class Transformer
     if exceldoc
       
       xmldoc = Nokogiri::XML::Document.parse(exceldoc) unless @errors.key?(uniqName)
+      
       exceldoc.close
+      remove exceldoc.path
       
       xmldoc.xpath("//Row").each do |node|
         #get tags from file
         hash = getTags node
         #translate these tags into mods equivalent
         hashArray = translate hash, uniqName
-        
-        break if @errors.key?(uniqName)
+        next unless hashArray
+        #break if @errors.key?(uniqName)
         
         #make xml - transformation
         xml = makeXML hashArray, institution
@@ -60,7 +62,6 @@ class Transformer
           puts "passes mods validation"
         else
           puts "failed mods validation"
-          break
         end
         
         #retrieve filename for mods xml file
@@ -70,7 +71,7 @@ class Transformer
         saveXML xml, fname, tmpdir unless fname.nil?
       end
       #check if any rows were found
-      errorStore(uniqName,("Not a valid excel xml file")) if xmldoc.xpath("//Row").length == 0
+      errorStore(uniqName,("ERROR :: No rows found.")) if xmldoc.xpath("//Row").length == 0
     end
     
     
@@ -103,9 +104,11 @@ class Transformer
   def translate hash, uniqName
     convertedTags = []
     
+    found = false #boolean if found
+    
     hash.each do |excelTag, inner_text|
       
-      found = false #check if tag is found
+      found = false #reset found to false
       
       modsTags.each do |modTag, dictionary| #check each mods tag
         break if found
@@ -134,9 +137,13 @@ class Transformer
           end
         end
       end #end each modsTags
-      errorStore(uniqName,"could not associate tag: #{excelTag}") unless found
+      errorStore(uniqName,"MAP ERROR :: No mapping for tag: #{excelTag}") unless found
     end
-    convertedTags
+    if found
+      convertedTags
+    else
+      false
+    end
   end
   
   #call excel to XML converter
@@ -205,16 +212,20 @@ class Transformer
   #hash helper method for errors
   def errorStore key, message
     if errors.key?(key)
-      errors[key].push(message)
+      errors[key].push(message) unless errors[key].include?(message) #suppress duplicate errors
     else
       errors.store(key,Array.new.push(message))
     end
   end
   
-  #remove key from hash
-  def errorRemove key
+  #remove key from hash or element in array value
+  def errorRemove key, index = nil
     if errors.key?(key)
-      errors.delete(key)
+      if index == nil
+        errors.delete(key)
+      else
+        errors[key].delete_at(index.to_i)
+      end
     else
       false
     end

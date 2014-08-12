@@ -31,7 +31,7 @@ module Util
       Dir.chdir(Dir.pwd + "/bin/") do
         system("java -jar excelXML.jar #{xlsxfile} #{outputfile}")
       end
-      raise "Could not convert excel document" unless File.exists?(outputfile)
+      raise "ERROR :: Could not convert Excel document" unless File.exists?(outputfile)
     end
     
   end

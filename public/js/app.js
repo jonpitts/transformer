@@ -2,7 +2,9 @@
   var app = angular.module('transformer', ['ngSanitize']); //ngSanitize directive needed for inserting html
   
   app.controller('MainController',['$scope', '$http', function($scope,$http){
-    $scope.params = {};
+    //note: xhr header removed from angular for posts
+    $http.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest'; //manually adding xhr request header
+    
     $http.get("/mods/")
       .then(function(res){ 
         var data = res.data; //response data is in json format
@@ -18,12 +20,16 @@
         $scope.notes = res.data; //response data is in json format
       });
     
-    $scope.submit = function() {
-      
-      alert($scope);
+    $scope.submit = function(tags) {
+      //send data as json
+      $http.post("/createHash", angular.toJson(tags)).
+        success(function() {
+          alert("Hash updated");
+        }).
+        error(function() {
+          alert("Error!");
+        });
     };
-    
   }]);
-  
   
 })();

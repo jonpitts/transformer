@@ -62,14 +62,14 @@
             <div class="panel-body">
               <p>Change textfields to match headers in xml file.  Use comma seperated lists
               if you need to match multiple headers to the same mods tag.</p>
-              <form ng-submit="submit()" enctype="multipart/form-data">
+              <form ng-submit="submit(tags)" enctype="multipart/form-data">
                 <table class="table table-hover">
                 <tr>
                   <th>Excel Column Header</th>
                   <th>MODS filename</th>
                 </tr>
                 <tr>
-                  <td><input type='text' value="{{tags['filename']}}" name='filename' class='form-control'></td>
+                  <td><input type='text' value="{{tags['filename']}}" ng-model="tags.filename" name='filename' class='form-control'></td>
                   <td>filename</td>
                 </tr>
               </table>
@@ -79,7 +79,7 @@
                     <th>MODs Tag</th>
                   </tr>
                   <tr ng-repeat="(tag,definition) in tags" ng-if="tag != 'filename'">
-                    <td><input type='text' value='{{definition}}' name='{{tag}}'></td>
+                    <td><input type='text' value='{{definition}}' ng-model="tags[tag]" name='{{tag}}' class='form-control'></td>
                     <td ng-bind-html="notes[tag]"></td>
                   </tr>
                 </table>

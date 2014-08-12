@@ -7,8 +7,8 @@ post '/remove/:collection_id' do |collection_id|
   redirect "/", 301
 end
 
-post '/delete/:collection_id' do |collection_id|
+post '/delete/:collection_id/:index' do |collection_id, index|
   error 400, "Entry does not exist: #{collection_id}" unless @@session[@user].errors.key?(collection_id)
-  @@session[@user].errorRemove(collection_id)
+  @@session[@user].errorRemove(collection_id, index)
   redirect "/", 301
 end

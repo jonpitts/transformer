@@ -55,13 +55,22 @@ post '/' do
 
 end
 
+#allow user to create their own MODs mapping
 post '/createHash' do
-  #allow user to create their own MODs mapping
-  @@session[@user].createHash params
-  @@session[@user].modsTags.each do |key, value|
-    puts "#{key} => #{value}"
+  #if ajax
+  params = @params
+  if request.xhr?
+    content_type 'application/json'
+    params = JSON.parse(request.body.read)
+    @@session[@user].createHash params
+    @@session[@user].modsTags.each
+  else
+    @@session[@user].createHash params
+    @@session[@user].modsTags.each do |key, value|
+      puts "#{key} => #{value}"
+    end
+    redirect '/'
   end
-  redirect '/'
 end
 
 post '/reset' do
@@ -133,9 +142,3 @@ post '/changePassword' do
   
 end
 
-#non-redirect version of createHash
-post '/createHashs' do
-  #allow user to create their own MODs mapping
-  @@session[@user].createHash params
-  @@session[@user].modsTags.each
-end
