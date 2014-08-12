@@ -31,7 +31,8 @@ class Transformer
           "place" => ["Place"],
           "publisher" => ["Publisher"],
           "language" => ["Language"],
-          "iso-lang" => ["iso-lang"]
+          "iso-lang" => ["iso-lang"],
+          "nonSort" => ["non-sort"]
         }
       saveTags user
       userSave user
@@ -43,8 +44,8 @@ class Transformer
   def notes
   { 
     "filename" => "used for file creation",
-    "title" => "&lt;title&gt;",
-    "alternative" => "&lt;title type=alternative&gt;",
+    "title" => "&lt;titleInfo&gt;&lt;title&gt;",
+    "alternative" => "&lt;titleInfo type=alternative&gt;&lt;title&gt;",
     "identifier" => "&lt;identifier&gt;",
     "author" => "&lt;name usage=primary&gt;&lt;role&gt;&lt;roleTerm&gt;author",
     "artist" => "&lt;name&gt;&lt;role&gt;&lt;roleTerm&gt;artist",
@@ -67,7 +68,8 @@ class Transformer
     "place" => "&lt;place&gt;",
     "publisher" => "&lt;publisher&gt;",
     "language" => "&lt;language&gt;",
-    "iso-lang" => "&lt;language&gt;&lt;languageTerm type=code authority=iso&gt;"
+    "iso-lang" => "&lt;language&gt;&lt;languageTerm type=code authority=iso&gt;",
+    "nonSort" => "&lt;nonSort&gt;"
   }
   end
   

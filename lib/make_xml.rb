@@ -23,6 +23,16 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
+        when 'nonSort'
+          node = newNode 'nonSort', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('titleInfo')
+          if parent == nil
+            parent = newNode 'titleInfo', '', doc, nil, nil, nil
+            root = doc.at_css('mods')
+            root << parent
+          end
+          parent << node
+          
         when 'identifier'
           node = newNode 'identifier', inner_text, doc, 'IID', nil, nil
           parent = doc.at_css('mods')
