@@ -48,10 +48,12 @@ class Transformer
       remove exceldoc.path
       
       xmldoc.xpath("//Row").each do |node|
-        #get tags from file
+        #get tags from xml
         hash = getTags node
+        
         #translate these tags into mods equivalent
         hashArray = translate hash, uniqName
+
         next unless hashArray
         #break if @errors.key?(uniqName)
         
@@ -68,8 +70,10 @@ class Transformer
         #retrieve filename for mods xml file
         fname = hashArray[0]
         fname = fname.values[0]
+        
         #save
         saveXML xml, fname, tmpdir unless fname.nil?
+
       end
       #check if any rows were found
       errorStore(uniqName,("ERROR :: No rows found.")) if xmldoc.xpath("//Row").length == 0
@@ -99,13 +103,13 @@ class Transformer
     return hash
   end
   
-  
-  #associate excel xml tag with mods tag
+
+  #associate excel xml tag with mods tag - returns false if error was found
   #matches downcase exact and downcase enumerated. ex 'Casper' == 'casper1'
   def translate hash, uniqName
     convertedTags = []
     
-    found = false #boolean if found
+    errorfound = false
     
     hash.each do |excelTag, inner_text|
       
@@ -139,11 +143,12 @@ class Transformer
         end
       end #end each modsTags
       errorStore(uniqName,"MAP ERROR :: No mapping for tag: #{excelTag}") unless found
+      errorfound = true unless found
     end
-    if found
-      convertedTags
+    if errorfound
+      return false
     else
-      false
+      return convertedTags
     end
   end
   
