@@ -21,6 +21,7 @@ enable :sessions
 @@tmpdir
 @@schema = 'mods-3-5.xsd'
 @@session = {}
+@@workspaces = {}
 
 class Login < Sinatra::Base
   
@@ -44,23 +45,35 @@ class Login < Sinatra::Base
       error 403, "Failed login: invalid user" unless user
     end 
     
+    #if user passes authentication
     if user.authenticate password
-      session['user_name'] = user.username
-      session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
-      userTags = user.tags
-      @transformer = Transformer.new session['user_path'], session['user_name']
-      @@session.store(session['user_name'], @transformer)
-      
+      #reuse workspace if user has logged in before
+      if @@session.has_key? name
+        session['user_name'] = name
+        session['user_path'] = @@workspaces[name]
+      #else create workspace and transformer
+      else
+        session['user_name'] = user.username
+        session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
+        userTags = user.tags
+        @transformer = Transformer.new session['user_path'], session['user_name']
+        @@session.store(session['user_name'], @transformer)
+        @@workspaces.store(session['user_name'], session['user_path'])
+      end
+                        
       if request.xhr?
         status 200
         body "Login successful"
       else
         redirect '/'
       end
+      
+    #else if user fails and is ajax
     elsif request.xhr?
       status 403
       body "Failed login: please check your username and password and try again."
       halt status, body
+    #else if fails and is not ajax
     else
       session['user_name'] = nil
       error 403, "Failed login: please check your username and password and try again."
@@ -70,7 +83,6 @@ class Login < Sinatra::Base
   
   get '/logout' do
     if session['user_name']
-      FileUtils.rm_rf(session['user_path'])
       session.clear
       redirect '/login'
     else

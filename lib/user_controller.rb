@@ -29,6 +29,11 @@ class Transformer
     userSave user
   end
   
+  def setSession user, session_id
+    user.session = session_id
+    userSave user
+  end
+  
   #user tag controllers
   
   #set user defined hash definitions
