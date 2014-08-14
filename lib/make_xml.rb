@@ -172,6 +172,10 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
+        when 'tableOfContents'
+          node = newNode 'tableOfContents', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('mods')
+          parent << node 
         end
 
       end

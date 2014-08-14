@@ -1,7 +1,22 @@
 <div class="row">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Hello <%= @user %>.</h3>
+      <h3 class="panel-title">User Settings Page :: Hello <%= @user %>.</h3>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">User Information</h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+        <li><%= user.username %></li>
+        <li><%= user.email %></li>
+        <li><%= user.institution %></li>
+      </ul>
     </div>
   </div>
 </div>
@@ -11,7 +26,7 @@
     <div class="panel panel-default">
     
       <div class="panel-heading">
-        <h3 class="panel-title">User Page</h3>
+        <h3 class="panel-title">Password Setting</h3>
       </div>
 
       <div class="panel-body">
@@ -44,3 +59,40 @@
     </div>
   </form>
 </div>
+
+<div class="row">
+  <form action="/changeSettings" method="POST" enctype="multipart/form-data">
+    <div class="panel panel-default">
+    
+      <div class="panel-heading">
+        <h3 class="panel-title">User Settings</h3>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h4>Settings</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label for='institution' type='text'>Institution</label>
+            <input type='text' name='institution' class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for='email' type='text'>Email</label>
+            <input type='email' name='email' class="form-control">
+          </div>
+        </div>
+        <div class="row">
+        <br>
+          <div class="col-md-4">
+            <button type='submit' value='update' class="btn btn-default">update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+

@@ -70,6 +70,7 @@ class Login < Sinatra::Base
   
   get '/logout' do
     if session['user_name']
+      FileUtils.rm_rf(session['user_path'])
       session.clear
       redirect '/login'
     else

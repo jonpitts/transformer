@@ -135,11 +135,18 @@ post '/changePassword' do
   error 400, "Missing confirm password" unless params[:confirm]
   error 400, "Passwords do not match" unless params[:newPassword] == params[:confirm]
   
-  if @@session[@user].changePassword @user, params[:password], params[:newPassword]
+  if @@session[@user].changePassword user, params[:password], params[:newPassword]
     redirect '/login'
   else
     error 400, "Incorrect password"
   end
   
+end
+
+post '/changeSettings' do
+  email = params[:email]
+  institution = params[:institution]
+  @@session[@user].changeSettings user, email, institution
+  redirect '/user'
 end
 

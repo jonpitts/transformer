@@ -14,6 +14,8 @@ class User
   property :username, String, :length => 3..50, :key => true
   property :password, BCryptHash
   property :admin, Boolean
+  property :institution, String, :length => 1..20
+  property :email, String, :length => 1..50
   
   has n, :tags
   
@@ -41,7 +43,15 @@ class User
     self.password = newPassword
   end
   
+  def changeEmail newEmail
+    self.email = newEmail
+  end
+  
+  def changeInst newInst
+    self.institution = newInst
+  end
+  
 end
 
 DataMapper.finalize
-#DataMapper.auto_upgrade!
+DataMapper.auto_upgrade!

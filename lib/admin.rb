@@ -1,6 +1,6 @@
 class Transformer
   
-  #set initial modsTags definitions
+  #admin - new user. set initial modsTags definitions
   def newUser username, password, admin = false
     puts "creating user: #{username}"
     
@@ -12,7 +12,7 @@ class Transformer
     end
   end
   
-  #remove user
+  #admin - remove user
   def removeUser id, username
 
     puts "Removing user id: #{id}"
@@ -20,7 +20,7 @@ class Transformer
     user.destroy unless id == '1'
   end
   
-  #turn admin on or off per user
+  #admin - turn admin on or off per user
   def setAdmin id, username
 
     user = User.get(id,username)
@@ -34,17 +34,7 @@ class Transformer
     userSave user
   end
   
-  #change password
-  def changePassword username, password, newPassword
-    user = User.first(:username => username)
-    if user.authenticate password
-      user.changePassword newPassword
-      userSave user
-    else
-      false
-    end
-  end
-  
+  #admin - set password
   def setPassword username, password
     user = User.first(:username => username)
     user.changePassword password

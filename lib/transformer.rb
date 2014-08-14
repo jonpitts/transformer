@@ -9,6 +9,7 @@ require_relative 'make_xml'
 require_relative 'mod_tags'
 require_relative 'admin'
 require_relative 'string_num'
+require_relative 'user_controller'
 
 
 include Util::Zipper

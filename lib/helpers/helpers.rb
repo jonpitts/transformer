@@ -24,5 +24,9 @@ module Sinatra
       end
     end
     
+    def user
+      User.first(:username => session['user_name'])
+    end
+    
   end
 end
