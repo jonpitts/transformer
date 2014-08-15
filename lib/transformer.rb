@@ -211,8 +211,12 @@ class Transformer
   
   #list Packages
   def listPackages
+    packages = []
     files = File.join(data_path, '/', '*.zip')
-    Dir.glob(files)
+    Dir.glob(files).each do |file|
+      packages << File.basename(file, ".zip")
+    end
+    packages
   end
   
   #hash helper method for errors
@@ -231,6 +235,9 @@ class Transformer
         errors.delete(key)
       else
         errors[key].delete_at(index.to_i)
+        if errors[key].length == 0
+          errors.delete(key)
+        end
       end
     else
       false

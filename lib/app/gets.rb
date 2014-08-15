@@ -26,6 +26,16 @@ get '/notes/' do
   notes = @@session[@user].notes.to_json
 end
 
+get '/errors/' do
+  content_type 'application/json'
+  errors = @@session[@user].errors.to_json
+end
+
+get '/packages/' do
+  content_type 'application/json'
+  packages = @@session[@user].listPackages.to_json
+end
+
 get '/test/' do
   erb :test, :layout => false
 end

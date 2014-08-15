@@ -47,14 +47,13 @@
             <th colspan="2">Package</th>
           </tr>
           <% @array = @@session[@user].listPackages %>
-          <% @array.each do |x| %>
-            <% collection_id = File.basename(x, ".zip") %>
+          <% @array.each do |collection_id| %>
             <% packageLink = "<a href='/#{collection_id}'>Download</a>" %>
             <% deletePackage = "<form action='/remove/#{collection_id}' method='post' >
                 <input type='submit' value='remove'>
               </form>" %>
             <tr>
-              <td><%= File.basename(x) %></td>
+              <td><%= collection_id %></td>
               <td><%= packageLink %></td>
               <td><%= deletePackage %></td>
             </tr>
@@ -88,7 +87,7 @@
             <tr>
               <td><%= collection_id %></td>
               <td><%= errors[index] %></td>
-              <td><%= deleteHash %>
+              <td><%= deleteHash %></td>
             </tr>
           <% end %>
         <% end %>

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">User Settings Page :: Hello <%= @user %>.</h3>
+      <h3 class="panel-title">User Settings Page</h3>
     </div>
   </div>
 </div>
@@ -12,11 +12,18 @@
       <h3 class="panel-title">User Information</h3>
     </div>
     <div class="panel-body">
-      <ul>
-        <li><%= user.username %></li>
-        <li><%= user.email %></li>
-        <li><%= user.institution %></li>
-      </ul>
+      <table class="table">
+        <tr>
+          <th>User Name</th>
+          <th>Email Address</th>
+          <th>Institution</th>
+        </tr>
+        <tr>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td><%= user.institution %></td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
@@ -26,15 +33,10 @@
     <div class="panel panel-default">
     
       <div class="panel-heading">
-        <h3 class="panel-title">Password Setting</h3>
+        <h3 class="panel-title">Update Password</h3>
       </div>
 
       <div class="panel-body">
-        <div class="row">
-          <div class="col-md-4">
-            <h4>Change Password</h4>
-          </div>
-        </div>
         <div class="row">
           <div class="col-md-4">
             <label for='password' type='text'>Current Password</label>

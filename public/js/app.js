@@ -19,6 +19,30 @@
       .then(function(res){ 
         $scope.notes = res.data; //response data is in json format
       });
+      
+    $http.get("/errors/")
+      .then(function(res){
+        $scope.errors = res.data;
+      });
+      
+    $http.get("/packages/")
+      .then(function(res){
+        $scope.packages = res.data;
+      });
+      
+    $scope.remove = function(sub,index) {
+      $http.post('/delete/'+ sub + '/' + index).
+        success(function(res) {
+          //x is not used but needed for proper behavior
+          var x = $scope.errors[sub].splice(index,1); 
+          if ($scope.errors[sub].length == 0) {
+            delete $scope.errors[sub];
+          }          
+        }).
+        error(function(res){
+          alert(res);
+        });
+    };
     
     $scope.submit = function(tags) {
       //send data as json

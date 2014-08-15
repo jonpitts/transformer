@@ -28,7 +28,6 @@
         <div class="row">
           <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
-
               <ul class="nav navbar-nav">
                 <% if signed_in? %>
                   <li><a href="/">Home</a></li>
@@ -43,7 +42,6 @@
                   <li><a>Test Page</a></li>
                 <% end %>
               </ul>
-
             </div>
           </nav>
         </div>
@@ -51,43 +49,112 @@
         <div class="row">
           <h3>AngularJS test page.</h3>
         </div>
-          
+        
         <div class="row">
-          <div class="panel panel-default">
-            
-            <div class="panel-heading">
-              <h3 class="panel-title">XML tags to MODs Mapping</h3>
-            </div>
-            
-            <div class="panel-body">
-              <p>Change textfields to match headers in xml file.  Use comma seperated lists
-              if you need to match multiple headers to the same mods tag.</p>
-              <form ng-submit="submit(tags)" enctype="multipart/form-data">
-                <table class="table table-hover">
-                <tr>
-                  <th>Excel Column Header</th>
-                  <th>MODS filename</th>
-                </tr>
-                <tr>
-                  <td><input type='text' value="{{tags['filename']}}" ng-model="tags.filename" name='filename' class='form-control'></td>
-                  <td>filename</td>
-                </tr>
-              </table>
+          <div id="collections">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Downloads</h3>
+              </div>
+              
+              <div class="panel-body">
                 <table class="table table-hover">
                   <tr>
-                    <th>Definition</th>
-                    <th>MODs Tag</th>
+                    <th>Submission</th>
+                    <th colspan="2">Package</th>
                   </tr>
-                  <tr ng-repeat="(tag,definition) in tags" ng-if="tag != 'filename'">
-                    <td><input type='text' value='{{definition}}' ng-model="tags[tag]" name='{{tag}}' class='form-control'></td>
-                    <td ng-bind-html="notes[tag]"></td>
-                  </tr>
+                    <tr ng-repeat="package in packages">
+                      <td>{{package}}</td>
+                      <td><a href="/{{package}}">download</a></td>
+                      <td><form action="{{'/remove/' + package}}" method='post' >
+                        <input type='submit' value='remove'></form></td>
+                    </tr>
                 </table>
-                  <button type='submit' value='submit' class='btn btn-default'>submit</button>
-              </form>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div id="errors">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Transformation Errors</h3>
+              </div>
+              
+              <div class="panel-body">
+                <table class="table table-hover" ng-repeat="(submission, array) in errors" ng-model="errors[submission]">
+                  <tr>
+                    <th>Submission</th>
+                    <th colspan="2">Error</th>
+                  </tr>
+                  <tr ng-repeat="error in array" ng-model="errors[submission][error]">
+                    <td>{{submission}}</td>
+                    <td>{{error}}</td>
+                    <td><form ng-submit="remove(submission,$index)" method='post' >
+                        <input type='submit' value='delete'></form>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#modsTags" href="#modsTags">XML tags to MODs Mapping</a></h3>
+            </div>
+            <div id="modsTags" class="panel-collapse collapse">
+              <div class="panel-body">
+                <p>Change textfields to match headers in xml file.  Use comma seperated lists
+                if you need to match multiple headers to the same mods tag.</p>
+                <form ng-submit="submit(tags)" enctype="multipart/form-data">
+                  <table class="table table-hover">
+                    <tr>
+                      <th>Excel Column Header</th>
+                      <th>MODS filename</th>
+                    </tr>
+                    <tr>
+                      <td><input type='text' value="{{tags['filename']}}" ng-model="tags.filename" name='filename' class='form-control'></td>
+                      <td>filename</td>
+                    </tr>
+                  </table>
+                  <table class="table table-hover">
+                    <tr>
+                      <th>Definition</th>
+                      <th>MODs Tag</th>
+                    </tr>
+                    <tr ng-repeat="(tag,definition) in tags" ng-if="tag != 'filename'">
+                      <td><input type='text' value='{{definition}}' ng-model="tags[tag]" name='{{tag}}' class='form-control'></td>
+                      <td ng-bind-html="notes[tag]"></td>
+                    </tr>
+                  </table>
+                  <button type='submit' value='submit' class='btn btn-default'>submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div> 
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#reset" href="#reset">Reset Mapping</a></h4>
+              </div>
+              <div id="reset" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <form action="/reset" method="post">
+                    <button type='submit' value='reset tags' class='btn btn-default'>reset tags</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div> 
     </div>
   </body>

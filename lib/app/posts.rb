@@ -1,7 +1,7 @@
 #GUI - Post something to service#
 require_relative '../helpers/helpers'
 
-#ajax post
+#post file to service
 post '/' do
   #if ajax request
   if request.xhr?
@@ -105,17 +105,6 @@ post '/setAdmin' do
   username = params[:name]
   id = params[:id]
   @@session[@user].setAdmin id, username
-  redirect '/admin'
-end
-
-post '/removeUser' do
-  protected!
-  error 400, "Missing user id" unless params[:id]
-  error 400, "Missing user name" unless params[:name]
-  
-  username = params[:name]
-  id = params[:id]
-  @@session[@user].removeUser id, username
   redirect '/admin'
 end
 
