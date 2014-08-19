@@ -1,10 +1,27 @@
 #browsers without html 5 do not support delete method - below method is used in gui
 post '/remove/:collection_id' do |collection_id|
   package = "#{@@session[@user].data_path}/#{collection_id}.zip"
-  error 400, "No such file #{collection_id}.zip" unless File.exist?(package)
-  @@session[@user].remove package
-  @@session[@user].errorRemove collection_id
-  redirect "/", 301
+  if File.exist?(package)
+    @@session[@user].remove package
+    @@session[@user].errorRemove collection_id
+    if request.xhr?
+      content_type 'application/json'
+      "success"
+    else
+      redirect '/'
+    end
+  else
+    message = "No such file #{collection_id}.zip"
+    if request.xhr?
+      content_type 'application/json'
+      status 400
+      body message
+      halt status, body
+    else
+      error 400, message
+      redirect "/", 301
+    end
+  end
 end
 
 post '/delete/:collection_id/:index' do |collection_id, index|
@@ -23,7 +40,7 @@ post '/delete/:collection_id/:index' do |collection_id, index|
       body "Entry does not exist: #{collection_id}"
       halt status, body
     else
-      error 400, "Entry does not exist: #{collection_id}" unless @@session[@user].errors.key?(collection_id)
+      error 400, "Entry does not exist: #{collection_id}"
       halt
     end
   end

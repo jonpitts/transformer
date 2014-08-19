@@ -30,7 +30,7 @@ Transformation:
 ---------------
   * An excel file is sent to the service
   * Excel is converted into an xml format
-  * Each <row> element of this converted file will generate a new xml file in mods format.
+  * Each `<row>` element of this converted file will generate a new xml file in mods format.
   * Each xml file will be validated against the mods schema.
   * A collection will be created and stored in a zip file and posted to the GUI.
   * A list of errors are generated when there are problems and populated to the GUI.

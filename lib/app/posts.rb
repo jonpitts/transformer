@@ -3,7 +3,7 @@ require_relative '../helpers/helpers'
 
 #post file to service
 post '/' do
-  #if ajax request
+  #if ajax requestst/#modsTags
   if request.xhr?
     unless params['xmlfile']
       status 400
@@ -63,7 +63,6 @@ post '/createHash' do
     content_type 'application/json'
     params = JSON.parse(request.body.read)
     @@session[@user].createHash params
-    @@session[@user].modsTags.each
     "MODS mapping updated."
   else
     @@session[@user].createHash params
