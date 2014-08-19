@@ -33,12 +33,13 @@ class Transformer
   
   #set user defined hash definitions
   def createHash params
-    params.each do |key, value|
-      array = value.split(',')
+    params.each do |key, array| #array value or string
+     array = array.split(',') unless array.class == Array
       array.each {|x| x.strip!}
       modsTags[key] = array
     end
     user = User.first(:username => @user_name)
+    puts params
     updateTags user
   end
   
