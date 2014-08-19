@@ -1,36 +1,44 @@
 (function(){
-  var app = angular.module('transformer', ['ngSanitize']); //ngSanitize directive needed for inserting html
+  var app = angular.module('transformer', ['ngSanitize','ngResource']); //ngSanitize directive needed for inserting html
+  app.config(['$resourceProvider',function($resourceProvider) { //ngResource for working with RESTful resources
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+  }]);
   
-  app.controller('MainController',['$scope', '$http', function($scope,$http){
+  app.controller('MainController',['$resource','$scope', '$filter','$http', function($resource,$scope,$filter,$http){
     //note: xhr header removed from angular for posts
     $http.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest'; //manually adding xhr request header
+    //RESTful resources
+    var Mods = $resource('/mods/:id');
+    var Notes = $resource('/notes/');
+    var Packages = $resource('/packages/');
+    var Errors = $resource('/errors/');
     
-    $http.get("/mods/")
-      .then(function(res){ 
-        var data = res.data; //response data is in json format
-        for (var key in data) {
-          var str = String(data[key]);
-          data[key] = str.replace(/[\[\"\ \]]/,''); //remove special characters from values
-        }
-        $scope.tags = data; //scope data into tags
-      });
+    //bring resources into scope
+    var errors = Errors.get(function(){
+        $scope.errors = errors;
+    });
+    var notes = Notes.get(function() {
+        $scope.notes = notes;
+    });
+    var packages = Packages.query(function() {
+        $scope.packages = packages;
+    });
+    var tags = Mods.get(function() {
+        $scope.tags = tags; //scope data into tags
+    });
+
+    $scope.removePackage = function(name) {
+      $http.post('/remove/'+ name).
+        success(function(res) {
+          //x is not used but needed for proper behavior
+          $scope.packages = $filter('filter')($scope.packages, '!' + name); 
+        }).
+        error(function(res){
+          alert(res);
+        });
+    };
       
-    $http.get("/notes/")
-      .then(function(res){ 
-        $scope.notes = res.data; //response data is in json format
-      });
-      
-    $http.get("/errors/")
-      .then(function(res){
-        $scope.errors = res.data;
-      });
-      
-    $http.get("/packages/")
-      .then(function(res){
-        $scope.packages = res.data;
-      });
-      
-    $scope.remove = function(sub,index) {
+    $scope.deleteError = function(sub,index) {
       $http.post('/delete/'+ sub + '/' + index).
         success(function(res) {
           //x is not used but needed for proper behavior
@@ -44,7 +52,7 @@
         });
     };
     
-    $scope.submit = function(tags) {
+    $scope.hash = function(tags) {
       //send data as json
       $http.post("/createHash", angular.toJson(tags)).
         success(function(res) {
@@ -54,6 +62,37 @@
           alert("Error!");
         });
     };
+    
+    $scope.submit = function() {
+      var formElement = document.getElementById("submitForm");
+      var formData = new FormData(formElement);
+      $http({
+        method: 'POST',
+        url: "/",
+        data: formData,
+        headers: {'Content-Type': undefined},
+        transformRequest: function(data) {return data;}
+        }).
+        success(function(res) {
+          var packages = Packages.query(function() {
+              $scope.packages = packages;
+          });
+          var errors = Errors.get(function(){
+              $scope.errors = errors;
+          });
+          //alert(res);
+        }).
+        error(function(res) {
+          var packages = Packages.query(function() {
+              $scope.packages = packages;
+          });
+          var errors = Errors.get(function(){
+              $scope.errors = errors;
+          });
+          alert(res);
+        });
+    };
+    
   }]);
   
 })();

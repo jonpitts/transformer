@@ -17,7 +17,7 @@ $(document).ready(function() {
       processData: false,
       success: function(responseTxt, textStatus, xhr)
       {
-        alert(responseTxt);
+        //alert(responseTxt);
         window.location='/';
       },
       error: function(jqXHR, textStatus, errorThrown)
