@@ -1,6 +1,6 @@
 Transformer Service
 ===================
-An sinatra based web-service that transforms excel files into mods format.
+A sinatra based web-service that transforms excel files into mods format.
 AngularJS used for much of the front end.
 
 Excel has been a popular tool for cataloging library meta-data.  
