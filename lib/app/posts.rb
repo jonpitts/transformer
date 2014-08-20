@@ -50,7 +50,7 @@ post '/' do
     #transform xml into mods
     Thread.new{@@session[@user].transform tempfile, collection_id, institution}
     
-    redirect '/'
+    redirect '/old/'
   end
 
 end
@@ -69,7 +69,7 @@ post '/createHash' do
     @@session[@user].modsTags.each do |key, value|
       puts "#{key} => #{value}"
     end
-    redirect '/'
+    redirect '/old/'
   end
 end
 

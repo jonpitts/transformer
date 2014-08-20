@@ -78,8 +78,8 @@ $(document).ready(function() {
       success: function(responseTxt, textStatus, xhr)
       {
         alert(responseTxt);
-        $("#collections").load("/ #collections");
-        $("#errors").load("/ #errors");
+        $("#collections").load("/old/ #collections");
+        $("#errors").load("/old/ #errors");
       },
       error: function(jqXHR, textStatus, errorThrown)
       {

@@ -1,7 +1,7 @@
 # Index view
 
 get '/' do
-  erb :index, :layout => :layout
+  erb :index, :layout => false
 end
 
 get '/user' do
@@ -36,6 +36,6 @@ get '/packages/' do
   packages = @@session[@user].listPackages.to_json
 end
 
-get '/test/' do
-  erb :test, :layout => false
+get '/old/' do
+  erb :content, :layout => :layout
 end

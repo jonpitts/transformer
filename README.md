@@ -1,6 +1,7 @@
 Transformer Service
 ===================
-An experimental sinatra based web-service that transforms excel files into mods format.
+An sinatra based web-service that transforms excel files into mods format.
+AngularJS used for much of the front end.
 
 Excel has been a popular tool for cataloging library meta-data.  
 It is much better to store this type of data in xml following a schema.
@@ -68,5 +69,8 @@ Notes - Issues - TODO
     * Ruby 1.9.3 has problems when multiple threads are both inside chdir blocks.
     * Shared resources such as the included java app create conflicts
   * Ruby gem 'roo' has an api for reading excel spreadsheets.  Will need to investigate.
+  * Moved the angular test page as the main content page.
+    * Older view still available as 'Alternate Page' link
+    * Angular will not work for 100% of users but otherwise is really nice.
   
   

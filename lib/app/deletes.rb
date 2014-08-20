@@ -8,7 +8,7 @@ post '/remove/:collection_id' do |collection_id|
       content_type 'application/json'
       "success"
     else
-      redirect '/'
+      redirect '/old/'
     end
   else
     message = "No such file #{collection_id}.zip"
@@ -19,7 +19,7 @@ post '/remove/:collection_id' do |collection_id|
       halt status, body
     else
       error 400, message
-      redirect "/", 301
+      redirect "/old/", 301
     end
   end
 end
@@ -31,7 +31,7 @@ post '/delete/:collection_id/:index' do |collection_id, index|
       content_type 'application/json'
       "success"
     else
-      redirect '/'
+      redirect '/old/'
     end
   else
     if request.xhr?

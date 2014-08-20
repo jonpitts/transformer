@@ -67,7 +67,7 @@
       var formElement = document.getElementById("submitForm");
       var formData = new FormData(formElement);
       formElement[0].value = '';
-      
+      formElement[1].value = '';
       //remove error message
       if(document.getElementById("error")) {
         var parent = document.getElementById("submitPanel")
