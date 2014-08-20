@@ -1,0 +1,165 @@
+<div class="row">
+  <h3>Welcome <%= user.username %>! <small>This service transforms excel files into XML MODs format.</small></h3>
+</div>
+  
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Upload</h3>
+    </div>
+    <div id="submitPanel" class="panel-body">
+      <form id='theForm' action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group">
+          <div class="col-md-4">
+            <label for='xmlfile' type='text'>Upload an excel file</label>
+            <span>
+              <input id="fileInput" type='file' name='xmlfile' class="btn btn-default btn-file">
+            </span>
+          </div>
+          <div class="col-md-4">
+            <label for='collection_id' type='text'>Name your submission</label>
+            <input type='text' name='collection_id' class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for='institution' type='text'>Owning Institution</label>
+            <input type='text' name='institution' value="<%= user.institution %>" class="form-control">
+          </div>
+        </div>
+        <div>
+          <button id="btnTransform" type='submit' value='transform' class="btn btn-default">transform</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div id="collections">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Downloads</h3>
+      </div>
+      
+      <div class="panel-body">
+        <table class="table table-hover">
+          <tr>
+            <th>Submission</th>
+            <th colspan="2">Package</th>
+          </tr>
+          <% @array = @@session[@user].listPackages %>
+          <% @array.each do |collection_id| %>
+            <% packageLink = "<a href='/#{collection_id}'>Download</a>" %>
+            <% deletePackage = "<form action='/remove/#{collection_id}' method='post' >
+                <input type='submit' value='remove'>
+              </form>" %>
+            <tr>
+              <td><%= collection_id %></td>
+              <td><%= packageLink %></td>
+              <td><%= deletePackage %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div id="errors">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Transformation Errors</h3>
+      </div>
+      
+      <div class="panel-body">
+        <table class="table table-hover">
+        <tr>
+          <th>Submission</th>
+          <th colspan="2">Error</th>
+        </tr>
+        <% @hash = @@session[@user].errors %>
+        <% @hash.each do |key, errors| %>
+          <% collection_id = key %>
+          <% errors.each_index do |index| %>
+            <% deleteHash = "<form action='/delete/#{collection_id}/#{index}' method='post' >
+                <input type='submit' value='delete'>
+              </form>" %>
+            <tr>
+              <td><%= collection_id %></td>
+              <td><%= errors[index] %></td>
+              <td><%= deleteHash %></td>
+            </tr>
+          <% end %>
+        <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#modsTags" href="#modsTags">XML tags to MODs Mapping</a></h3>
+    </div>
+    
+    <div id="modsTags" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p>Change textfields to match headers in xml file.  Use comma seperated lists
+        if you need to match multiple headers to the same mods tag.</p>
+        <form action="/createHash" method="post" enctype="multipart/form-data">
+        <table class="table table-hover">
+          <tr>
+            <th>MODS filename</th>
+            <th>Excel Column Header</th>
+          </tr>
+          <tr>
+            <% array = @@session[@user].modsTags['filename'] %>
+            <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+            <% tagInput = "<input type='text' value='#{str}' name='filename' class='form-control'>" %>
+            <td><%= tagInput %></td>
+            <td>filename</td>
+          </tr>
+        </table>
+        <table class="table table-hover">
+          <tr>
+            <th>Excel XML Tags</th>
+            <th>Available MODs Tags and Attributes</th>
+          </tr>
+          <% @@session[@user].modsTags.each do |tag, array| %>
+            <% next if tag == 'filename' %>
+             <tr>
+               <% str = array.to_s.gsub(/[\[\]\"]/, '') %>
+               <% tagInput = "<input type='text' value='#{str}' name='#{tag}' class='form-control'>" %>
+               <% note = @@session[@user].notes[tag] || '' %>
+               <% if note.length > 0 %>
+                 <% tag = note %>
+               <% end %>
+               <td><%= tagInput %></td>
+               <td><%= tag %></td>
+             </tr>
+          <% end %>
+        </table>
+        <button type='submit' value='submit' class='btn btn-default'>submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div> 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#reset" href="#reset">Reset Mapping</a></h4>
+      </div>
+      <div id="reset" class="panel-collapse collapse">
+        <div class="panel-body">
+          <form action="/reset" method="post">
+            <button type='submit' value='reset tags' class='btn btn-default'>reset tags</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
