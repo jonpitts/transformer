@@ -66,6 +66,25 @@
     $scope.submit = function() {
       var formElement = document.getElementById("submitForm");
       var formData = new FormData(formElement);
+      formElement[0].value = '';
+      
+      //remove error message
+      if(document.getElementById("error")) {
+        var parent = document.getElementById("submitPanel")
+        var child = document.getElementById("error");
+        parent.removeChild(child);
+      }
+      
+      //create sent message if it does not exist
+      if(!document.getElementById("submitted")) {
+        var label = document.createElement("div");
+        var t = document.createTextNode("Submitted");
+        label.id = "submitted";
+        label.className = "alert alert-success";
+        label.appendChild(t);
+        document.getElementById("submitPanel").appendChild(label);
+      }
+    
       $http({
         method: 'POST',
         url: "/",
@@ -89,7 +108,20 @@
           var errors = Errors.get(function(){
               $scope.errors = errors;
           });
-          alert(res);
+          //remove submit message
+          if(document.getElementById("submitted")) {
+            var parent = document.getElementById("submitPanel")
+            var child = document.getElementById("submitted");
+            parent.removeChild(child);
+          }
+          //create error message
+          var label = document.createElement("div");
+          var t = document.createTextNode(res);
+          label.id = "error";
+          label.className = "alert alert-warning";
+          label.appendChild(t);
+          document.getElementById("submitPanel").appendChild(label);
+          //alert(res);
         });
     };
     

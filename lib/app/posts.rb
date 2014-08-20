@@ -48,7 +48,7 @@ post '/' do
     institution = params[:institution] unless params[:institution].empty?
     
     #transform xml into mods
-    @@session[@user].transform tempfile, collection_id, institution
+    Thread.new{@@session[@user].transform tempfile, collection_id, institution}
     
     redirect '/'
   end

@@ -26,10 +26,12 @@ module Util
     
     # call excelXML.jar to convert excel into xml
     #Two parameters: xlsxfile and outputfile
-    def excelXML xlsxfile, outputfile
+    def excelXML xlsxfile, outputfile, lock
       #debugger
-      Dir.chdir(Dir.pwd + "/bin/") do
-        system("java -jar excelXML.jar #{xlsxfile} #{outputfile}")
+        #Dir.chdir(Dir.pwd + "/bin/") do
+      lock.synchronize do
+         `java -jar #{Dir.pwd}/bin/excelXML.jar #{xlsxfile} #{outputfile}`
+        #end
       end
       raise "ERROR :: Could not convert Excel document" unless File.exists?(outputfile)
     end

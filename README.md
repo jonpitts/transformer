@@ -61,4 +61,12 @@ Reasons for this project
   * Simplify process of converting xml files into mods.
     * Typically transformations require stylesheets and can be difficult to maintain.
     * Transformer now uses xml node manipulation for creating the mods xml.
+    
+Notes - Issues - TODO
+--------------------
+  * New code changes uses mutex to solve resource problems.
+    * Ruby 1.9.3 has problems when multiple threads are both inside chdir blocks.
+    * Shared resources such as the included java app create conflicts
+  * Ruby gem 'roo' has an api for reading excel spreadsheets.  Will need to investigate.
+  
   

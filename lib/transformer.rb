@@ -10,7 +10,7 @@ require_relative 'mod_tags'
 require_relative 'admin'
 require_relative 'string_num'
 require_relative 'user_controller'
-
+require 'thread'
 
 include Util::Zipper
 include Util::ExcelXML
@@ -20,12 +20,13 @@ class Transformer
   
   attr_accessor :errors, :data_path, :modsTags, :user_name, :layout
   
-  def initialize data_path, user_name
+  def initialize data_path, user_name, lock
     @user_name = user_name
     @data_path = data_path
     setTagsDefault
     @errors = {}
     @layout = File.open("lib/templates/layout.erb", 'rb').read
+    @lock = lock
   end
   
   #transform excel xml into mods validated xml files
@@ -162,7 +163,7 @@ class Transformer
         fname = File.basename(fname, File.extname(fname)) + ".xml"
       end
       fname = File.join(tmpdir, fname)
-      excelXML exceldoc.path, fname
+      excelXML exceldoc.path, fname, @lock
       File.open(fname)
     rescue Exception => e
       errorStore(uniqName,e.message)

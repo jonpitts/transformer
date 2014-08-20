@@ -8,6 +8,7 @@ require 'bundler/setup'
 require 'nokogiri'
 require 'sinatra'
 require 'json'
+require 'thread'
 require_relative 'lib/transformer'
 require_relative 'lib/model/user'
 require_relative 'lib/model/tag'
@@ -22,7 +23,7 @@ enable :sessions
 @@schema = 'mods-3-5.xsd'
 @@session = {}
 @@workspaces = {}
-
+@@lock = Mutex.new
 class Login < Sinatra::Base
   
   get "/login" do
@@ -56,7 +57,7 @@ class Login < Sinatra::Base
         session['user_name'] = user.username
         session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
         userTags = user.tags
-        @transformer = Transformer.new session['user_path'], session['user_name']
+        @transformer = Transformer.new session['user_path'], session['user_name'], @@lock
         @@session.store(session['user_name'], @transformer)
         @@workspaces.store(session['user_name'], session['user_path'])
       end
