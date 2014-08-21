@@ -64,7 +64,7 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
-        when 'secondary'
+        when 'personal-secondary'
           node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
           parent = doc.at_css('mods')
           parent << node
@@ -133,7 +133,8 @@ class Transformer
         
         when 'namePartDate'
           node = newNode 'namePart', inner_text, doc, 'date', nil, nil
-          parent = doc.at_css('name[usage=primary]')
+          names = doc.css('name')
+          parent = names.last unless names == nil
           if parent != nil
             parent << node
           else
