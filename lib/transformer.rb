@@ -50,6 +50,7 @@ class Transformer
       remove exceldoc.path
       
       xmldoc.xpath("//Row").each do |node|
+        next if node.child.nil? #empty row
         #get tags from xml
         hash = getTags node
         
@@ -61,7 +62,7 @@ class Transformer
         
         #make xml - transformation
         xml = makeXML hashArray, institution
-        
+
         #validate xml against mods
         if validate xml, uniqName
           #puts "passes mods validation"

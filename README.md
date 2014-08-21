@@ -15,8 +15,10 @@ Quick Setup:
   * `bundle exec ruby app.rb`
   * navigate your browser to 0.0.0.0:4567
     * login with user: `admin` & password: `admin`
-  * a sample test file is included in the public folder
-    * check notes section
+  * files included in `public/test/`
+    * template file for using right away
+    * sample test files to test mapping and transformations
+
 
 General Operation:
 ------------------
@@ -28,6 +30,19 @@ General Operation:
   * The admin user may create logins and assign admin designations.
   * The service allows multiple users to be logged in with each users own working space.
   * All temp space is cleared upon service exit.
+  * User may reset tags to get new tag definitions and reset default associations
+  
+  * sample template file
+    * a good starting point
+    * red columns are required and blue are repeatable
+      * other columns may be repeatable but probably not necessary
+      * only one name primary in mods
+      * mods validation will tell you if you created a problem, so experiment.
+    * due to heuristic obstacles some columns need to follow others
+      * name-personal-primary-date must follow name-personal-primary
+    * this will help illustrate the type of information found in mods format
+    * the red columns are typically top-level and required elements found in mods
+      * filename is not mods but required for naming the transformations
   
 Transformation:
 ---------------
@@ -46,6 +61,8 @@ Ruby Requirements:
   * bundler
     * sinatra
     * nokogiri
+      * gem download is compatible with nix systems.
+      * special installation with windows is required
     * uuid
     * data_mapper
     * dm-sqlite-adapter
@@ -57,6 +74,9 @@ Other Requirements:
 -------------------
   * sqlite3
   * a jvm
+  * installation works fine on nix systems
+  * windows installation may require some extra attention with gem builds
+    * personal experience with nokogiri on windows is not optimal
   
 Reasons for this project
 ------------------------
@@ -66,7 +86,7 @@ Reasons for this project
     * Transformer now uses xml node manipulation for creating the mods xml.
     
 Notes - Issues - TODO
---------------------
+---------------------
   * New code changes uses mutex to solve resource problems.
     * Ruby 1.9.3 has problems when multiple threads are both inside chdir blocks.
     * Shared resources such as the included java app create conflicts
@@ -78,11 +98,5 @@ Notes - Issues - TODO
     * Will use a nonce to stop this behavior
     * Using a nonce is good in practice to prevent replay attacks also
     * Work needed to mitigate this from the UI
-  * included test file
-    * the test file was created by one of our local libraries
-    * you will need to update the mods definitions from the gui in order to process the file
-      * this illustrates one of the types of errors that come from attempting a transformation
-  * I intend to upload a sample template excel file that can be used with this service
-    * it will have excel column headers similar to
-    * `filename IID title title-alternate etc...`
-    
+  * TODO - improve node building heuristics
+  * TODO - check input size on mods associations and report problems to user

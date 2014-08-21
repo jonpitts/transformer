@@ -8,7 +8,7 @@ class Tag
 
   property :id, Serial
   property :tag_name, String
-  property :tag_assoc, String
+  property :tag_assoc, String, :length => 1..100
   
   belongs_to :user
 end
