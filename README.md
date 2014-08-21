@@ -72,5 +72,7 @@ Notes - Issues - TODO
   * Moved the angular test page as the main content page.
     * Older view still available as 'Alternate Page' link
     * Angular will not work for 100% of users but otherwise is really nice.
-  
-  
+  * Browsers can duplicate ajax requests. Discovered this when quickly submitting packages from firefox.
+    * Will use a nonce to stop this behavior
+    * Using a nonce is good in practice to prevent replay attacks also
+    * Work needed to mitigate this from the UI

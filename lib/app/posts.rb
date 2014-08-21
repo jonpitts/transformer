@@ -3,7 +3,8 @@ require_relative '../helpers/helpers'
 
 #post file to service
 post '/' do
-  #if ajax requestst/#modsTags
+
+  #if ajax request
   if request.xhr?
     unless params['xmlfile']
       status 400
@@ -22,6 +23,20 @@ post '/' do
       body "Owning institution left blank"
       halt status, body
     end
+
+    timestamp = params[:timestamp]
+    
+    #enforce nonce
+    if (timestamp.nil?) || (@@session[@user].nonce.include? timestamp)
+      status 400
+      body "Duplicate form submission detected"
+      halt status, body
+    else
+      if @@session[@user].nonce.length > 1000
+        @@session[@user].nonce = [] #reset nonce when it gets too big
+      end
+      @@session[@user].nonce << params[:timestamp]
+    end
     
     tempfile = params['xmlfile'][:tempfile]
     filename = params['xmlfile'][:filename]
@@ -36,6 +51,7 @@ post '/' do
     "Process complete"
   #handle non ajax requests
   else
+    puts 'non ajax'
     error 400, "Missing Data" unless params['xmlfile']
     error 400, "Missing Data" if params['xmlfile'].empty?
     

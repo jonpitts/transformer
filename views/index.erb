@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
     <script src="/js/jquery-1.11.1.min.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/ajax.js"></script>
+    <!--<script src="/js/ajax.js"></script>-->
     <script src="/js/angular.js"></script>
     <script src="/js/angular-sanitize.js"></script>
     <script src="/js/angular-resource.min.js"></script>
@@ -61,7 +61,7 @@
                 <div class="form-group">
                   <div class="col-md-4">
                     <label for='xmlfile' type='text'>Upload an excel file</label>
-                    <input type='file' name='xmlfile' class="btn btn-default btn-file">
+                    <input ng-disabled="btnDisabled" type='file' name='xmlfile' class="btn btn-default btn-file">
                   </div>
                   <div class="col-md-4">
                     <label for='collection_id' type='text'>Name your submission</label>
@@ -73,7 +73,7 @@
                   </div>
                 </div>
                 <div>
-                  <button id="btnTransform" type='submit' value='transform' class="btn btn-default">transform</button>
+                  <button id="btnTransform" ng-disabled="btnDisabled" type='submit' value='transform' class="btn btn-default">transform</button>
                 </div>
               </form>
             </div>

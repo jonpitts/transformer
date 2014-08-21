@@ -63,11 +63,15 @@
         });
     };
     
-    $scope.submit = function() {
+    $scope.submit = function(e) {
+      $scope.btnDisabled = true; //slow down submits
       var formElement = document.getElementById("submitForm");
       var formData = new FormData(formElement);
-      formElement[0].value = '';
-      formElement[1].value = '';
+      formData.append("timestamp",Date.now()); //nonce value - used server side to prevent duplicate submits
+      var inst = formElement[2].value; //institution value
+      formElement.reset();
+      formElement[2] = inst;
+      
       //remove error message
       if(document.getElementById("error")) {
         var parent = document.getElementById("submitPanel")
@@ -84,11 +88,12 @@
         label.appendChild(t);
         document.getElementById("submitPanel").appendChild(label);
       }
-    
+      
       $http({
         method: 'POST',
         url: "/",
         data: formData,
+        cache: true,
         headers: {'Content-Type': undefined},
         transformRequest: function(data) {return data;}
         }).
@@ -99,7 +104,6 @@
           var errors = Errors.get(function(){
               $scope.errors = errors;
           });
-          //alert(res);
         }).
         error(function(res) {
           var packages = Packages.query(function() {
@@ -121,8 +125,11 @@
           label.className = "alert alert-warning";
           label.appendChild(t);
           document.getElementById("submitPanel").appendChild(label);
-          //alert(res);
         });
+        setTimeout(function(){$scope.btnDisabled = false;$scope.$apply();},1000);
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
     };
     
   }]);

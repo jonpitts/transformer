@@ -18,7 +18,7 @@ include Util::ExcelXML
 class Transformer
 #  include Singleton
   
-  attr_accessor :errors, :data_path, :modsTags, :user_name, :layout
+  attr_accessor :errors, :data_path, :modsTags, :user_name, :layout, :nonce
   
   def initialize data_path, user_name, lock
     @user_name = user_name
@@ -27,6 +27,7 @@ class Transformer
     @errors = {}
     @layout = File.open("lib/templates/layout.erb", 'rb').read
     @lock = lock
+    @nonce = [] #array of timestamps
   end
   
   #transform excel xml into mods validated xml files
@@ -63,9 +64,9 @@ class Transformer
         
         #validate xml against mods
         if validate xml, uniqName
-          puts "passes mods validation"
+          #puts "passes mods validation"
         else
-          puts "failed mods validation"
+          #puts "failed mods validation"
         end
         
         #retrieve filename for mods xml file

@@ -13,7 +13,7 @@ class Transformer
           doc = Nokogiri::XML.parse(xmlStr)
           
           xsd.validate(doc).each do |error|
-            puts error.message
+            #puts error.message
             errorStore(uniqName,"VALIDATION ERROR :: #{error}")
           end
         end
