@@ -15,6 +15,8 @@ Quick Setup:
   * `bundle exec ruby app.rb`
   * navigate your browser to 0.0.0.0:4567
     * login with user: `admin` & password: `admin`
+  * a sample test file is included in the public folder
+    * check notes section
 
 General Operation:
 ------------------
@@ -76,3 +78,11 @@ Notes - Issues - TODO
     * Will use a nonce to stop this behavior
     * Using a nonce is good in practice to prevent replay attacks also
     * Work needed to mitigate this from the UI
+  * included test file
+    * the test file was created by one of our local libraries
+    * you will need to update the mods definitions from the gui in order to process the file
+      * this illustrates one of the types of errors that come from attempting a transformation
+  * I intend to upload a sample template excel file that can be used with this service
+    * it will have excel column headers similar to
+    * `filename IID title title-alternate etc...`
+    

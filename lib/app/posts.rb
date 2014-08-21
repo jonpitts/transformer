@@ -51,7 +51,6 @@ post '/' do
     "Process complete"
   #handle non ajax requests
   else
-    puts 'non ajax'
     error 400, "Missing Data" unless params['xmlfile']
     error 400, "Missing Data" if params['xmlfile'].empty?
     
