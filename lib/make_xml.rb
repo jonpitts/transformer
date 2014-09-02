@@ -27,7 +27,7 @@ class Transformer
           node = newNode 'nonSort', inner_text, doc, nil, nil, nil
           parent = doc.at_css('titleInfo')
           if parent == nil
-            parent = newNode 'titleInfo', '', doc, nil, nil, nil
+            parent = Nokogiri::XML::Node.new 'titleInfo', doc
             root = doc.at_css('mods')
             root << parent
           end
@@ -64,6 +64,19 @@ class Transformer
           parent = doc.at_css('mods')
           parent << node
           
+        when 'role'
+          names = doc.css('name')
+          role = newNode 'role', inner_text, doc, nil, 'roleTerm', 'text'
+          parent = names.last unless names == nil
+          if parent != nil
+            parent << role
+          else
+            name = Nokogiri::XML::Node.new 'name', doc
+            name << role
+            parent = doc.at_css('mods')
+            parent << name
+          end   
+          
         when 'personal-secondary'
           node = newNode 'name', inner_text, doc, 'personal', 'namePart', nil
           parent = doc.at_css('mods')
@@ -77,7 +90,7 @@ class Transformer
         when 'physicalDescription'
           parent = doc.at_css('physicalDescription')
           if parent == nil
-            node = newNode 'physicalDescription', '', doc, nil, nil, nil
+            node = Nokogiri::XML::Node.new 'physicalDescription', doc
             parent = doc.at_css('mods')
             parent << node
           end
@@ -91,7 +104,7 @@ class Transformer
           parent << node
           
         when 'typeOfResource'
-          node = newNode 'typeOfResource', inner_text.downcase!, doc, nil, nil, nil
+          node = newNode 'typeOfResource', inner_text.downcase, doc, nil, nil, nil
           parent = doc.at_css('mods')
           parent << node
           
@@ -131,14 +144,14 @@ class Transformer
           parent = doc.at_css('originInfo')
           parent << node
         
-        when 'namePartDate'
+        when 'namePartDate' #append namePart to last name element added to doc
           node = newNode 'namePart', inner_text, doc, 'date', nil, nil
           names = doc.css('name')
           parent = names.last unless names == nil
           if parent != nil
             parent << node
           else
-            name = newNode 'name', '', doc, nil, nil, nil
+            name = Nokogiri::XML::Node.new 'name', doc
             name['usage'] = 'primary'
             name << node
             parent = doc.at_css('mods')
@@ -168,7 +181,7 @@ class Transformer
         when 'iso-lang'
           languageTerm = newNode 'languageTerm', inner_text, doc, 'code', nil, nil
           languageTerm['authority']='iso639-2b'
-          node = newNode 'language', '', doc, nil, nil, nil
+          node = Nokogiri::XML::Node.new 'language', doc
           node << languageTerm
           parent = doc.at_css('mods')
           parent << node
@@ -177,8 +190,62 @@ class Transformer
           node = newNode 'tableOfContents', inner_text, doc, nil, nil, nil
           parent = doc.at_css('mods')
           parent << node 
+        
+        when 'physicalExtent'
+          parent = doc.at_css('physicalDescription')
+          if parent == nil
+            node = Nokogiri::XML::Node.new 'physicalDescription', doc
+            parent = doc.at_css('mods')
+            parent << node
+          end
+          node = newNode 'extent', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('physicalDescription')
+          parent << node
+        
+        when 'abstract'
+          node = newNode 'abstract', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+        
+        when 'noteType' #add type to last note element added to doc
+          #inner_text becomes type attribute in this case
+          notes = doc.css('note')
+          parent = notes.last unless notes == nil
+          if parent != nil
+            parent['type'] = inner_text
+          else 
+            note = newNode 'note', '', doc, inner_text, nil, nil
+            name['usage'] = 'primary'
+            name << node
+            parent = doc.at_css('mods')
+            parent << name
+          end       
+        
+        when 'relatedItemTitle'
+          relatedItem = Nokogiri::XML::Node.new 'relatedItem', doc
+          titleInfo = newNode 'titleInfo', inner_text, doc, nil, 'title', nil
+          relatedItem << titleInfo
+          root = doc.at_css('mods')
+          root << relatedItem
+        
+        when 'provenance'
+          node = newNode 'note', inner_text, doc, 'acquisition', nil, nil
+          parent = doc.at_css('mods')
+          parent << node
+        
+        when 'locationUrl'
+          node = newNode 'url', inner_text, doc, nil, nil, nil
+          parent = doc.at_css('location')
+          parent << node
+        
+        when 'subjectTitle'
+          subject = Nokogiri::XML::Node.new 'subject', doc
+          title = newNode 'titleInfo', inner_text, doc, nil, 'title', nil
+          subject << title
+          root = doc.at_css('mods')
+          root << subject
         end
-
+        
       end
 
       xmlStr = doc.to_xml(:indent => 2)

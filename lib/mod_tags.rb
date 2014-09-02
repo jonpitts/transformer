@@ -6,20 +6,21 @@ class Transformer
     if user.tags.count == 0
       @modsTags = 
         { 
-          "filename" => ["Filename","file"], #used to associate with file
-          "title" => ["Title"],
+          "filename" => ["filename","file"], #used to associate with file
+          "title" => ["title"],
           "alternative" => ["title-alternative","alternative_title"],
           "identifier" => ["identifier-IID","identifier"],
-          "author" => ["Author"],
-          "artist" => ["Artist"],
+          "author" => ["author"],
+          "artist" => ["artist"],
           "personal" => ["name-personal-primary"],
           "personal-secondary" => ["name-personal"],
-          "corporate" => ["Corporate"],
-          "dateIssued" => ["Date"],
-          "physicalDescription" => ["physical-form","format"],
-          "genre" => ["Genre"],
+          "corporate" => ["name-corporate"],
+          "role" => ["role"],
+          "dateIssued" => ["date_issued"],
+          "physicalDescription" => ["format","physicalDescription"],
+          "genre" => ["genre"],
           "typeOfResource" => ["type_of_resource"],
-          "note" => ["Description"],
+          "note" => ["description","note"],
           "topic" => ["subject-topic","subject","topic-subject"],
           "geographic" => ["subject-geographic","geographic-subject"],
           "physicalLocation" => ["PhysicalLocation"],
@@ -27,13 +28,20 @@ class Transformer
           "accessCondition" => ["access_condition","rights"],
           "dateCreated" => ["date_created","date-created"],
           "namePartDate" => ["name-personal-primary-date","name-personal-date","creator_dates"],
-          "issuance" => ["Issuance"],
+          "issuance" => ["issuance"],
           "place" => ["place_of_publication"],
-          "publisher" => ["Publisher"],
-          "language" => ["Language"],
+          "publisher" => ["publisher"],
+          "language" => ["language"],
           "iso-lang" => ["iso-lang"],
           "nonSort" => ["title-nonsort"],
-          "tableOfContents" => ["tableOfContents"]
+          "tableOfContents" => ["table_of_contents","tableOfContents"],
+          "physicalExtent" => ["physicalDescription-extent"],
+          "abstract" => ["abstract"],
+          "noteType" => ["note_type"],
+          "relatedItemTitle" => ["related_item_title"],
+          "provenance" => ["provenance"],
+          "locationUrl" => ["location_url"],
+          "subjectTitle" => ["subject-title"]
         }
       saveTags user
       userSave user
@@ -53,6 +61,7 @@ class Transformer
     "personal" => "&lt;name type=personal usage=primary&gt;",
     "personal-secondary" => "&lt;name type=personal&gt;(non primary)",
     "corporate" => "&lt;name type=corporate&gt;",
+    "role" => "&lt;role&gt;",
     "dateIssued" => "&lt;dateIssued&gt;",
     "physicalDescription" => "&lt;physicalDescription&gt;",
     "genre" => "&lt;genre&gt;",
@@ -71,7 +80,14 @@ class Transformer
     "language" => "&lt;language&gt;",
     "iso-lang" => "&lt;language&gt;&lt;languageTerm type=code authority=iso&gt;",
     "nonSort" => "&lt;nonSort&gt;",
-    "tableOfContents" => "&lt;tableOfContents&gt;"
+    "tableOfContents" => "&lt;tableOfContents&gt;",
+    "physicalExtent" => "&lt;extent&gt;",
+    "abstract" => "&lt;abstract&gt;",
+    "noteType" => "&lt;note type= &gt;",
+    "relatedItemTitle" => "&lt;relatedItem&gt;&lt;titleInfo&gt;&lt;title&gt;",
+    "provenance" => "&lt;note type=acquisition&gt;",
+    "locationUrl" => "&lt;location&gt;&lt;url&gt;",
+    "subjectTitle" => "&lt;subject&gt;&lt;titleInfo&gt;&lt;title&gt;"
   }
   end
   

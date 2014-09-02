@@ -32,7 +32,8 @@ General Operation:
   * The admin user may create logins and assign admin designations.
   * The service allows multiple users to be logged in with each users own working space.
   * All temp space is cleared upon service exit.
-  * User may reset tags to get new tag definitions and reset default associations
+  * A hash of mods tag associations are definable per user and saved to the database.
+    * User may reset tags to get new tag definitions and reset default associations
   
   * sample template file
     * a good starting point
@@ -54,8 +55,6 @@ Transformation:
   * Each xml file will be validated against the mods schema.
   * A collection will be created and stored in a zip file and posted to the GUI.
   * A list of errors are generated when there are problems and populated to the GUI.
-  * A hash of mods tag associations are definable per user and saved to the database.
-  
   
 Ruby Requirements:
 ------------------
@@ -100,5 +99,9 @@ Notes - Issues - TODO
     * Will use a nonce to stop this behavior
     * Using a nonce is good in practice to prevent replay attacks also
     * Work needed to mitigate this from the UI
+  * Duplicate Column headers
+    * Originally had users specify unique column headers.
+    * Made some changes to handle duplicate column headers behind the scenes.
+    * Duplicate column headers such as `subject` now generate output.
   * TODO - improve node building heuristics
   * TODO - check input size on mods associations and report problems to user

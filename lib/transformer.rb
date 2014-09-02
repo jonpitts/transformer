@@ -52,10 +52,10 @@ class Transformer
       xmldoc.xpath("//Row").each do |node|
         next if node.child.nil? #empty row
         #get tags from xml
-        hash = getTags node
+        array = getTags node
         
         #translate these tags into mods equivalent
-        hashArray = translate hash, uniqName
+        hashArray = translate array, uniqName
 
         next unless hashArray
         #break if @errors.key?(uniqName)
@@ -97,25 +97,26 @@ class Transformer
   
   #extract all tags from excel generated xml file
   def getTags node
-    hash = {} #hash to hold working collection
+    array = [] #array to hold working collection
     
     node.children.each do |child|
-      hash.store(child.name,child.inner_text) unless child.name == 'text' #text 
+      array << Hash[child.name,child.inner_text] unless child.name == 'text' #text 
     end
     
-    return hash
+    return array
   end
   
 
   #associate excel xml tag with mods tag - returns false if error was found
   #matches downcase exact and downcase enumerated. ex 'Casper' == 'casper1'
-  def translate hash, uniqName
+  def translate array, uniqName
     convertedTags = []
     
     errorfound = false
     
-    hash.each do |excelTag, inner_text|
-      
+    array.each do |hash|
+      excelTag = hash.first[0]
+      inner_text = hash.first[1]
       found = false #reset found to false
       
       modsTags.each do |modTag, dictionary| #check each mods tag
@@ -194,11 +195,8 @@ class Transformer
   def package tmpdir, fname, dir
     
     begin
-      #io = tar(tmpdir)
       fname = "#{fname}.zip"
       fname = File.join(tmpdir, fname)
-      #file = File.new(fname, 'w') 
-      #file.write(io.string)
       puts fname
       zip(fname, tmpdir)
     ensure
