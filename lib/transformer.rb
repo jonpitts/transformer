@@ -37,7 +37,7 @@ class Transformer
 
     errorStore(uniqName,"Owning Institution left blank.") if institution.nil?
     
-    tmpdir = Dir.mktmpdir ("#{data_path}/")
+    tmpdir = Dir.mktmpdir nil, "#{data_path}/"
     
     #convert excel into xml
     exceldoc = convertExcel(doc, uniqName, tmpdir)

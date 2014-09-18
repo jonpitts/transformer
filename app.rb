@@ -3,6 +3,7 @@ at_exit do
   FileUtils.rm_rf(settings.data_path)
 end
 
+require 'tmpdir'
 require 'rubygems'
 require 'bundler/setup'
 require 'nokogiri'
@@ -55,7 +56,7 @@ class Login < Sinatra::Base
       #else create workspace and transformer
       else
         session['user_name'] = user.username
-        session['user_path'] = Dir.mktmpdir ("#{@@tmpdir}/")
+        session['user_path'] = Dir.mktmpdir nil,"#{@@tmpdir}/"
         userTags = user.tags
         @transformer = Transformer.new session['user_path'], session['user_name'], @@lock
         @@session.store(session['user_name'], @transformer)
