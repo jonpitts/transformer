@@ -41,7 +41,10 @@ class Transformer
           "relatedItemTitle" => ["related_item_title"],
           "provenance" => ["provenance"],
           "locationUrl" => ["location_url"],
-          "subjectTitle" => ["subject-title"]
+          "subjectTitle" => ["subject-title"],
+          "subjectTemporal" => ["subject-temporal"],
+          "subjectName" => ["subject-name"],
+          "subjectNameDate" => ["subject-name-date"]
         }
       saveTags user
       userSave user
@@ -87,7 +90,10 @@ class Transformer
     "relatedItemTitle" => "&lt;relatedItem&gt;&lt;titleInfo&gt;&lt;title&gt;",
     "provenance" => "&lt;note type=acquisition&gt;",
     "locationUrl" => "&lt;location&gt;&lt;url&gt;",
-    "subjectTitle" => "&lt;subject&gt;&lt;titleInfo&gt;&lt;title&gt;"
+    "subjectTitle" => "&lt;subject&gt;&lt;titleInfo&gt;&lt;title&gt;",
+    "subjectTemporal" => "&lt;subject&gt;&lt;temporal encoding=w3cdtf&gt;",
+    "subjectName" => "&lt;subject&gt;&lt;name&gt;&lt;namePart&gt;",
+    "subjectNameDate" => "&lt;subject&gt;&lt;name&gt;&lt;namePart type=date&gt;"
   }
   end
   

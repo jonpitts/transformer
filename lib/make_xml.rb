@@ -244,6 +244,39 @@ class Transformer
           subject << title
           root = doc.at_css('mods')
           root << subject
+          
+        when 'subjectTemporal'
+          subject = Nokogiri::XML::Node.new 'subject', doc
+          temporal = Nokogiri::XML::Node.new 'temporal', doc
+          temporal['encoding'] = "w3cdtf"
+          temporal.content = inner_text
+          subject << temporal
+          root = doc.at_css('mods')
+          root << subject
+          
+        when 'subjectName'
+          subject = Nokogiri::XML::Node.new 'subject', doc
+          name = newNode 'name', inner_text, doc, nil, 'namePart', nil
+          subject << name
+          root = doc.at_css('mods')
+          root << subject
+          
+        when 'subjectNameDate' #append namePart to last subject name element added to doc
+          
+          nameDate = newNode 'namePart', inner_text, doc, 'date', nil, nil
+          names = doc.css('subject name')
+          parent = names.last unless names == nil
+          if parent != nil
+            parent << nameDate
+          else
+            subject = Nokogiri::XML::Node.new 'subject', doc
+            name = Nokogiri::XML::Node.new 'name', doc
+            name << nameDate
+            subject << name
+            parent = doc.at_css('mods')
+            parent << subject
+          end       
+          
         end
         
       end
