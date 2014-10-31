@@ -33,15 +33,17 @@
               <ul class="nav navbar-nav">
                 <% if signed_in? %>
                   <li><a href="/">Home</a></li>
+                  <li><a href="/templates">Templates</a></li>
                   <li><a href="/user">Change user settings</a></li>
                   <li><a href="/logout">Logout</a></li>
                   <li><a href="/old/">Alternate Page</a></li>
                   <%= "<li><a href='/admin'>Admin</a></li>" if authorized? %>
                 <% else %>
                   <li><a>Home</a></li>
+                  <li><a>Templates</a></li>
                   <li><a>Change user settings</a></li>
                   <li><a>Logout</a></li>
-                  <li><a>Test Page</a></li>
+                  <li><a>Alternate Page</a></li>
                 <% end %>
               </ul>
             </div>

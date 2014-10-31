@@ -4,6 +4,10 @@ get '/' do
   erb :index, :layout => false
 end
 
+get '/templates' do
+  erb :templates, :layout => :layout
+end
+
 get '/user' do
   erb :user, :layout => :layout
 end
