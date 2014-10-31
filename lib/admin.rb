@@ -14,10 +14,9 @@ class Transformer
   
   #admin - remove user
   def removeUser id, username
-
     puts "Removing user id: #{id}"
     user = User.get(id,username)
-    user.destroy unless id == '1'
+    user.destroy! unless id == '1'
   end
   
   #admin - turn admin on or off per user

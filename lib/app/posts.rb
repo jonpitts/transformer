@@ -82,7 +82,7 @@ post '/createHash' do
   else
     @@session[@user].createHash params
     @@session[@user].modsTags.each do |key, value|
-      puts "#{key} => #{value}"
+      #puts "#{key} => #{value}"
     end
     redirect '/old/'
   end
@@ -102,8 +102,7 @@ post '/newUser' do
   
   username = params[:name]
   password = params[:password]
-  puts username
-  puts password
+
   if @@session[@user].newUser username, password
     redirect '/admin'
   else

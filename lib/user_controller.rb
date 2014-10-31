@@ -39,13 +39,13 @@ class Transformer
       modsTags[key] = array
     end
     user = User.first(:username => @user_name)
-    puts params
+    #puts params
     updateTags user
   end
   
   #save user tags - for new user and tags
   def saveTags user
-    puts 'saving tags'
+    #puts 'saving tags'
     @modsTags.each do |modtag, modassoc|
       tag = Tag.new(:tag_name => modtag, :tag_assoc => modassoc)
       user.tags << tag
@@ -54,7 +54,7 @@ class Transformer
   
   #update user tags
   def updateTags user
-    puts 'updating tags'
+    #puts 'updating tags'
     @modsTags.each do |modtag, modassoc|
       tag =  user.tags.first(:tag_name => modtag)
       tag.update(:tag_assoc => modassoc)
@@ -63,12 +63,12 @@ class Transformer
   
   #load saved user tags
   def loadTags user
-    puts 'loading tags'
+    #puts 'loading tags'
     @modsTags = {}
     user.tags.each do |tag|
       tag_name = tag.tag_name
       tag_assoc = tag.tag_assoc.gsub(/[\[\"\ \]]/,'').split(',')
-      puts "#{tag_assoc}"
+      #puts "#{tag_assoc}"
       @modsTags.store(tag_name,tag_assoc)
     end
   end
@@ -76,9 +76,9 @@ class Transformer
   #reset saved tags to default
   def reset
     user = User.first(:username => @user_name)
-    puts 'deleting tags'
+    #puts 'deleting tags'
     user.tags.all.destroy
-    puts 'loading default tags'
+    #puts 'loading default tags'
     setTagsDefault
   end
   
