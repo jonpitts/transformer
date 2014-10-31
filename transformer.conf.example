@@ -1,8 +1,0 @@
-<VirtualHost *:80>
- # Transformer runs on port 3000
- DocumentRoot /var/www/html/
- ServerName transformer-test.fcla.edu
- # Other directives here
- ProxyPass / http://127.0.0.1:3000/
- ProxyPassReverse / http://127.0.0.1:3000/
-</VirtualHost>
