@@ -43,6 +43,13 @@ task :environment do
 end
 
 #subtasks for different deployments
+#deploy to premis-test
+task :premistest => :environment do
+  set :domain, 'premis-test.fcla.edu'
+  set :keep_releases, 3
+  invoke :deploy
+end
+
 #deploy to ripple
 task :ripple => :environment do
   set :domain, 'ripple.fcla.edu'
@@ -80,6 +87,8 @@ end
 desc "Check for parameters.  Used in setup."
 task :arg_check do
   case ARGV[1]
+  when 'premistest'
+    set :domain, 'premis-test.fcla.edu'
   when 'ripple'
     set :domain, 'ripple.fcla.edu'
   when 'marsala'
