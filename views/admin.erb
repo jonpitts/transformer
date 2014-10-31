@@ -58,7 +58,7 @@
         <% delete = "<form action='/removeUser' method='post' >
             <input type='hidden' value='#{id}' name='id' >
             <input type='hidden' value='#{name}' name='name' >
-            <button type='submit' value='remove'>remove</button>
+            <button type='submit' value='remove' onclick='return confirmClick();'>remove</button>
             </form>" %>
         <% admin = user.isAdmin? %>
         <% adminSet = "<form action='/setAdmin' method='post' >
