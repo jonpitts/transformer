@@ -19,12 +19,12 @@ require_relative 'lib/helpers/helpers'
 #Initial author: Jonathan Pitts, 2014
 
 enable :sessions
-@@transformer
-@@tmpdir
-@@schema = 'mods-3-5.xsd'
-@@session = {}
-@@workspaces = {}
-@@lock = Mutex.new
+$transformer
+$tmpdir
+$schema = 'mods-3-5.xsd'
+$session = {}
+$workspaces = {}
+$lock = Mutex.new
 class Login < Sinatra::Base
   
   get "/login" do
@@ -50,17 +50,17 @@ class Login < Sinatra::Base
     #if user passes authentication
     if user.authenticate password
       #reuse workspace if user has logged in before
-      if @@session.has_key? name
+      if $session.has_key? name
         session['user_name'] = name
-        session['user_path'] = @@workspaces[name]
+        session['user_path'] = $workspaces[name]
       #else create workspace and transformer
       else
         session['user_name'] = user.username
-        session['user_path'] = Dir.mktmpdir nil,"#{@@tmpdir}/"
+        session['user_path'] = Dir.mktmpdir nil,"#{$tmpdir}/"
         userTags = user.tags
-        @transformer = Transformer.new session['user_path'], session['user_name'], @@lock
-        @@session.store(session['user_name'], @transformer)
-        @@workspaces.store(session['user_name'], session['user_path'])
+        @transformer = Transformer.new session['user_path'], session['user_name'], $lock
+        $session.store(session['user_name'], @transformer)
+        $workspaces.store(session['user_name'], session['user_path'])
       end
                         
       if request.xhr?
@@ -104,9 +104,9 @@ use Login
 
 ##sinatra app configuration
 configure do
-  @@tmpdir = Dir.mktmpdir
+  $tmpdir = Dir.mktmpdir
   set :environment, :production
-  set :data_path, @@tmpdir
+  set :data_path, $tmpdir
   set :views, "#{File.dirname(__FILE__)}/views"
 end
 

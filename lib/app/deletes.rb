@@ -1,9 +1,9 @@
 #browsers without html 5 do not support delete method - below method is used in gui
 post '/remove/:collection_id' do |collection_id|
-  package = "#{@@session[@user].data_path}/#{collection_id}.zip"
+  package = "#{$session[@user].data_path}/#{collection_id}.zip"
   if File.exist?(package)
-    @@session[@user].remove package
-    @@session[@user].errorRemove collection_id
+    $session[@user].remove package
+    $session[@user].errorRemove collection_id
     if request.xhr?
       content_type 'application/json'
       "success"
@@ -25,8 +25,8 @@ post '/remove/:collection_id' do |collection_id|
 end
 
 post '/delete/:collection_id/:index' do |collection_id, index|
-  if @@session[@user].errors.key?(collection_id)
-    @@session[@user].errorRemove(collection_id, index)
+  if $session[@user].errors.key?(collection_id)
+    $session[@user].errorRemove(collection_id, index)
     if request.xhr?
       content_type 'application/json'
       "success"
@@ -53,6 +53,6 @@ post '/removeUser' do
   
   username = params[:name]
   id = params[:id]
-  @@session[@user].removeUser id, username
+  $session[@user].removeUser id, username
   redirect '/admin'
 end

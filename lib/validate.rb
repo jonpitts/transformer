@@ -7,7 +7,7 @@ class Transformer
       @lock.synchronize do
         #use local schemas
         Dir.chdir 'public/schemas/' do
-          xsd = Nokogiri::XML::Schema(File.read(@@schema))
+          xsd = Nokogiri::XML::Schema(File.read($schema))
           #doc = Nokogiri::XML.parse(File.read('balancia.xml'))
           
           doc = Nokogiri::XML.parse(xmlStr)

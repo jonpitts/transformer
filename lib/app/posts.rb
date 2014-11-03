@@ -27,15 +27,15 @@ post '/' do
     timestamp = params[:timestamp]
     
     #enforce nonce
-    if (timestamp.nil?) || (@@session[@user].nonce.include? timestamp)
+    if (timestamp.nil?) || ($session[@user].nonce.include? timestamp)
       status 400
       body "Duplicate form submission detected"
       halt status, body
     else
-      if @@session[@user].nonce.length > 1000
-        @@session[@user].nonce = [] #reset nonce when it gets too big
+      if $session[@user].nonce.length > 1000
+        $session[@user].nonce = [] #reset nonce when it gets too big
       end
-      @@session[@user].nonce << params[:timestamp]
+      $session[@user].nonce << params[:timestamp]
     end
     
     tempfile = params['xmlfile'][:tempfile]
@@ -47,7 +47,7 @@ post '/' do
     institution = params[:institution] unless params[:institution].empty?
     
     #transform xml into mods
-    @@session[@user].transform tempfile, collection_id, institution
+    $session[@user].transform tempfile, collection_id, institution
     "Process complete"
   #handle non ajax requests
   else
@@ -63,7 +63,7 @@ post '/' do
     institution = params[:institution] unless params[:institution].empty?
     
     #transform xml into mods
-    Thread.new{@@session[@user].transform tempfile, collection_id, institution}
+    Thread.new{$session[@user].transform tempfile, collection_id, institution}
     
     redirect '/old/'
   end
@@ -77,11 +77,11 @@ post '/createHash' do
   if request.xhr?
     content_type 'application/json'
     params = JSON.parse(request.body.read)
-    @@session[@user].createHash params
+    $session[@user].createHash params
     "MODS mapping updated."
   else
-    @@session[@user].createHash params
-    @@session[@user].modsTags.each do |key, value|
+    $session[@user].createHash params
+    $session[@user].modsTags.each do |key, value|
       #puts "#{key} => #{value}"
     end
     redirect '/old/'
@@ -89,7 +89,7 @@ post '/createHash' do
 end
 
 post '/reset' do
-  @@session[@user].reset
+  $session[@user].reset
   redirect '/'
 end
 
@@ -103,7 +103,7 @@ post '/newUser' do
   username = params[:name]
   password = params[:password]
 
-  if @@session[@user].newUser username, password
+  if $session[@user].newUser username, password
     redirect '/admin'
   else
     error 400, "User already exists"
@@ -117,7 +117,7 @@ post '/setAdmin' do
   
   username = params[:name]
   id = params[:id]
-  @@session[@user].setAdmin id, username
+  $session[@user].setAdmin id, username
   redirect '/admin'
 end
 
@@ -127,7 +127,7 @@ post '/setPassword' do
   error 400, "Missing password" unless params[:password]
   error 400, "Cannot change admin password this way" if params[:id] == '1'
   
-  @@session[@user].setPassword params[:name], params[:password]
+  $session[@user].setPassword params[:name], params[:password]
   redirect '/admin'
 end
 
@@ -137,7 +137,7 @@ post '/changePassword' do
   error 400, "Missing confirm password" unless params[:confirm]
   error 400, "Passwords do not match" unless params[:newPassword] == params[:confirm]
   
-  if @@session[@user].changePassword user, params[:password], params[:newPassword]
+  if $session[@user].changePassword user, params[:password], params[:newPassword]
     redirect '/login'
   else
     error 400, "Incorrect password"
@@ -148,7 +148,7 @@ end
 post '/changeSettings' do
   email = params[:email]
   institution = params[:institution]
-  @@session[@user].changeSettings user, email, institution
+  $session[@user].changeSettings user, email, institution
   redirect '/user'
 end
 
