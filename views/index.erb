@@ -98,7 +98,7 @@
                   </tr>
                     <tr ng-repeat="package in packages" ng-model="packages.package">
                       <td>{{package}}</td>
-                      <td><a href="/{{package}}">download</a></td>
+                      <td><a href="/download/{{package}}">download</a></td>
                       <td><form ng-submit="removePackage(package)" method='post' >
                         <input type='submit' value='remove'></form></td>
                     </tr>
