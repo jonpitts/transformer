@@ -24,9 +24,33 @@ post '/remove/:collection_id' do |collection_id|
   end
 end
 
+# error delete
 post '/delete/:collection_id/:index' do |collection_id, index|
   if $session[@user].errors.key?(collection_id)
     $session[@user].errorRemove(collection_id, index)
+    if request.xhr?
+      content_type 'application/json'
+      "success"
+    else
+      redirect '/old/'
+    end
+  else
+    if request.xhr?
+      content_type 'application/json'
+      status 400
+      body "Entry does not exist: #{collection_id}"
+      halt status, body
+    else
+      error 400, "Entry does not exist: #{collection_id}"
+      halt
+    end
+  end
+end
+
+# delete all errors
+post '/delete/:collection_id/' do |collection_id|
+  if $session[@user].errors.key?(collection_id)
+    $session[@user].errorRemove(collection_id)
     if request.xhr?
       content_type 'application/json'
       "success"

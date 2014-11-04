@@ -121,6 +121,14 @@
                     <th>Submission</th>
                     <th colspan="2">Error</th>
                   </tr>
+                  <tr>
+                    <td>{{submission}}</td>
+                    <td colspan="2"><form ng-submit="clearErrors(submission)" method='post' >
+                        <input type='submit' value='clear all errors'></form>
+                    </td>
+                  </tr>
+                  <tr>
+                  </tr>
                   <tr ng-repeat="error in array" ng-model="errors[submission][error]">
                     <td>{{submission}}</td>
                     <td>{{error}}</td>

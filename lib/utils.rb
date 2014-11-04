@@ -11,7 +11,7 @@ module Util
     # Creates a zip
     # Two parameters: zipfile_name, path to folder of collection to zip
     def zip(zipfile_name, path)
-      #puts zipfile_name
+      puts zipfile_name
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zf|
         Dir[File.join(path, "**/*")].each do |file|
           #puts file
@@ -27,10 +27,11 @@ module Util
     # call excelXML.jar to convert excel into xml
     #Two parameters: xlsxfile and outputfile
     def excelXML xlsxfile, outputfile, lock
+      puts outputfile
       #debugger
         #Dir.chdir(Dir.pwd + "/bin/") do
       lock.synchronize do
-         `java -jar #{Dir.pwd}/bin/excelXML.jar #{xlsxfile} #{outputfile}`
+         `java -jar #{Dir.pwd}/bin/excelXML.jar #{xlsxfile} '#{outputfile}'`
         #end
       end
       raise "ERROR :: Could not convert Excel document" unless File.exists?(outputfile)

@@ -52,6 +52,17 @@
         });
     };
     
+    $scope.clearErrors = function(sub) {
+      $http.post('/delete/'+ sub + '/').
+        success(function(res) {
+          //x is not used but needed for proper behavior
+          delete $scope.errors[sub]       
+        }).
+        error(function(res){
+          alert(res);
+        });
+    };
+    
     $scope.hash = function(tags) {
       //send data as json
       $http.post("/createHash", angular.toJson(tags)).
