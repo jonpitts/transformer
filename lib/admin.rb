@@ -1,11 +1,11 @@
 class Transformer
   
   #admin - new user. set initial modsTags definitions
-  def newUser username, password, admin = false
+  def newUser username, password, email, institution, admin = false
     puts "creating user: #{username}"
     
     unless User.first(:username => username)
-      user = User.new(:username => username, :password => password, :admin => admin)
+      user = User.new(:username => username, :password => password, :email => email, :institution => institution, :admin => admin)
       userSave user
     else
       false
@@ -17,6 +17,13 @@ class Transformer
     puts "Removing user id: #{id}"
     user = User.get(id,username)
     user.destroy! unless id == '1'
+  end
+  
+  #admin - set institution
+  def setInst username, institution
+    user = User.first(:username => username)
+    user.setInst institution unless institution == ''
+    userSave user
   end
   
   #admin - turn admin on or off per user

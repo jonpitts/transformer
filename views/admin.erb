@@ -16,6 +16,14 @@
             <input type='text' name='name' class='form-control'>
           </div>
           <div class="col-md-4">
+            <label for='email' type='text'>email</label>
+            <input type='email' name='email' class='form-control'>
+          </div>
+          <div class="col-md-4">
+            <label for='institution' type='text'>Institution</label>
+            <input type='text' name='institution' class='form-control'>
+          </div>
+          <div class="col-md-4">
             <label for='password' type='text'>Password</label>
             <input type='password' name='password' class='form-control'>
           </div>
@@ -48,6 +56,7 @@
           <th>User Name</th>
           <th>Admin</th>
           <th></th>
+          <th>Institution</th>
           <th>Remove User</th>
           <th>Set Password</th>
         </tr>
@@ -55,16 +64,22 @@
         <% users.each do |user| %>
         <% id = user.id %>
         <% name = user.username %>
-        <% delete = "<form action='/removeUser' method='post' >
+        <% inst = "<form action='/setInst' method='post' >
             <input type='hidden' value='#{id}' name='id' >
             <input type='hidden' value='#{name}' name='name' >
-            <button type='submit' value='remove' onclick='return confirmClick();'>remove</button>
+            <input type='text' value='#{user.institution}' name='institution' >
+            <button type='submit' value='set institution'>set</button>
             </form>" %>
         <% admin = user.isAdmin? %>
         <% adminSet = "<form action='/setAdmin' method='post' >
             <input type='hidden' value='#{id}' name='id' >
             <input type='hidden' value='#{name}' name='name' >
             <button type='submit' value='set admin'>set admin</button>
+            </form>" %>
+         <% delete = "<form action='/removeUser' method='post' >
+            <input type='hidden' value='#{id}' name='id' >
+            <input type='hidden' value='#{name}' name='name' >
+            <button type='submit' value='remove' onclick='return confirmClick();'>remove</button>
             </form>" %>
          <% passwordSet = "<form action='/setPassword' method='POST' enctype='multipart/form-data'>
             <input type='hidden' value='#{id}' name='id' >
@@ -75,6 +90,7 @@
             <% if id == 1 %>
             <% delete = "" %>
             <% adminSet = "" %>
+            <% inst = "" %>
             <% passwordSet = "" %>
             <% end %>
         <tr>
@@ -82,6 +98,7 @@
           <td><%= name %></td>
           <td><%= admin %></td>
           <td><%= adminSet %></td>
+          <td><%= inst %></td>
           <td><%= delete %></td>
           <td><%= passwordSet %></td>
         </tr>

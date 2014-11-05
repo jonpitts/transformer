@@ -10,6 +10,7 @@ class Transformer
       rescue Exception => e
         t.rollback
         puts e.message
+        return false
       end
     end
   end
@@ -24,8 +25,8 @@ class Transformer
   end
   
   def changeSettings user, email, institution
-    user.changeEmail email unless email == ''
-    user.changeInst institution unless institution == ''
+    user.setEmail email unless email == ''
+    user.setInst institution unless institution == ''
     userSave user
   end
   

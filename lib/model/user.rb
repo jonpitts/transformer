@@ -4,8 +4,11 @@ require 'dm-sqlite-adapter'
 require 'bcrypt'
 require_relative 'tag'
 
+# DataMapper configurables
 DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.sqlite")
+DataMapper::Model.raise_on_save_failure = true
 
+#User Model
 class User
   include DataMapper::Resource
   include BCrypt
@@ -14,8 +17,8 @@ class User
   property :username, String, :length => 3..50, :key => true
   property :password, BCryptHash
   property :admin, Boolean
-  property :institution, String, :length => 1..20
-  property :email, String, :length => 1..50
+  property :institution, String, :length => 0..20
+  property :email, String, :length => 0..50
   
   has n, :tags
   
@@ -43,11 +46,11 @@ class User
     self.password = newPassword
   end
   
-  def changeEmail newEmail
+  def setEmail newEmail
     self.email = newEmail
   end
   
-  def changeInst newInst
+  def setInst newInst
     self.institution = newInst
   end
   

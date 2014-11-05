@@ -102,8 +102,10 @@ post '/newUser' do
   
   username = params[:name]
   password = params[:password]
+  email = params[:email]? params[:email] : nil
+  institution = params[:institution]? params[:institution] : nil
 
-  if $session[@user].newUser username, password
+  if $session[@user].newUser username, password, email, institution
     redirect '/admin'
   else
     error 400, "User already exists"
@@ -118,6 +120,16 @@ post '/setAdmin' do
   username = params[:name]
   id = params[:id]
   $session[@user].setAdmin id, username
+  redirect '/admin'
+end
+
+post '/setInst' do
+  protected!
+  error 400, "Missing user name" unless params[:name]
+  error 400, "Cannot change admin institution this way" if params[:id] == '1'
+  error 400, "Missing institution name" unless params[:institution]
+  
+  $session[@user].setInst params[:name], params[:institution]
   redirect '/admin'
 end
 
@@ -146,8 +158,18 @@ post '/changePassword' do
 end
 
 post '/changeSettings' do
-  email = params[:email]
-  institution = params[:institution]
+  email = if params[:email]
+            params[:email]
+          else 
+            user.email
+          end
+  
+  institution = if params[:institution]
+                  params[:institution]
+                else
+                  user.institution
+                end
+                
   $session[@user].changeSettings user, email, institution
   redirect '/user'
 end

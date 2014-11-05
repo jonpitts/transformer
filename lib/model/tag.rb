@@ -2,7 +2,7 @@ require 'rubygems'
 require 'data_mapper'
 require 'dm-sqlite-adapter'
 
-
+#Tag Model
 class Tag
   include DataMapper::Resource
 
